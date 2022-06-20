@@ -1,23 +1,23 @@
 library(REdaS); library(xlsx); library(beepr) ;library(dplyr); library(imputeTS)
 #Set location, initial date and end time; date origin in R, 1970-1-1
 Location<-"Fittja"
-start.date<-"2020-6-15"  
-end.date<-"2023-6-14" 
+start.date<-"2020-5-1"  
+end.date<-"2023-4-30" 
 #insert multiple removal date in multiple years, can be different dates
-removal.dates<-as.numeric(as.Date(c("2020-10-12","2021-4-25"
-                                    ,"2020-10-12","2021-4-25"
-                                    ,"2021-10-12","2022-4-25"
-                                    ,"2022-10-12","2023-4-25"),by="days"))
-removal.end<-as.numeric(as.Date(c("2020-10-22","2021-5-27"
-                                  ,"2020-10-22","2021-5-27"
-                                  ,"2021-10-22","2022-5-27"
-                                  ,"2022-10-22","2023-5-27"),by="days"))
+removal.dates<-as.numeric(as.Date(c("2020-8-25","2021-2-25"
+                                    ,"2020-8-25","2021-2-25"
+                                    ,"2021-8-25","2022-2-25"
+                                    ,"2022-9-25","2023-2-25"),by="days"))
+removal.end<-as.numeric(as.Date(c("2020-10-21","2021-5-25"
+                                  ,"2020-10-21","2021-5-25"
+                                  ,"2021-10-21","2022-5-25"
+                                  ,"2022-10-21","2023-5-25"),by="days"))
 removal.day<-unique(removal.end-removal.dates)
 removal.duration<-list()
     for (i in 3:8){ 
         removal.duration[[i-2]]<-c(removal.dates[i]:removal.end[i])}
 #################Start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
-Envir.daily<-read.csv("input/daily env input_Arlanda_June15.csv",header=T)
+Envir.daily<-read.csv("input/daily env input_Fittja_May1.csv",header=T)
 #To produce an extra year for balance soil temperature
 Envir.daily<-Envir.daily[c(1:365,1:1095),]
 #to know how many days we have for the loop
@@ -27,8 +27,8 @@ ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T)
 ini.M.Temp<-ini.M.Temp[,"Initial.Temp"] #change to vector
 
 #Read parameters
-source("R/3.Parameters.R",echo=F)           #Parameters we can change
-source("R/4.Constants_sweden.R",echo = F)   #Constants no need to change
+source("3.Parameters.R",echo=F)           #Parameters we can change
+source("4.Constants_sweden.R",echo = F)   #Constants no need to change
 
 #to store daily manure.temp in the 30 layers
 manure.temp<-c()
@@ -50,13 +50,13 @@ wind.v<-Envir.daily$wind[i]   #daily wind speed at 2m, m/h
 wind.f<-(2.36+1.67*wind.v)*Au^(-0.05)
 cc<-min(Envir.daily$cloud[i]*1.5,1) #cloud clover
 precip.d<-Envir.daily$precip[i]/1000
-source("R/3.1.Alpha.s_adjustment.R",echo=F)
+source("3.1.Alpha.s_adjustment.R",echo=F)
 RH6<-Envir.daily$RH.6[i]
 RH15<-Envir.daily$RH.15[i]
 ####################Manure depth adjustment
 #Reset M.depth and ini.M.temp after soil temperature stabilization
 if (sum(i==365|i==730|i==1095|i==1460)==1){
-M.depth<-0.525217
+M.depth<-0.67
 Zmmax<-M.depth
 }
 # #ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T)
@@ -84,13 +84,13 @@ if(sum(removal.dates[c(4,6,8)] == Output$`Date ID`[i]) == 1) {
 
 
 #To calculate manure volume, encoding to be change if use mac
-source("R/5.Manure volume_sweden.R",echo=F)
+source("5.Manure volume_sweden.R",echo=F)
 #print(paste("after volume",Sys.time()-starttime))
 #To calculate solar radiation, soil temp, and manure temp at 300 sec steps.
-source("R/6.Solar radiation and soil temp_sweden_shade.R",echo=F)
+source("6.Solar radiation and soil temp_sweden_shade.R",echo=F)
 #print(paste("after solar",Sys.time()-starttime))
 #To calculate final hourly temp
-source("R/7.hourly temp_sweden.R",echo=F)
+source("7.hourly temp_sweden.R",echo=F)
 
 #To obtain temp and depth at the end of the day
 # I need manure temperature in different depth every day for the last year
@@ -134,9 +134,8 @@ ini.S.Temp<-S.Temp[,288]
 }
 endtime<-Sys.time()
 #Output<-Output[366:d.length,] # first year is for soil temp stabilization
-totaltime<-endtime-starttime
-totaltime
-beep(sound=2)
+print(endtime-starttime)
+
 
 # Summary for the results, part 2. Only output after all simulation is done. 
 #The data of manure tank, i.e output L1:M18
