@@ -8,7 +8,8 @@ Tank.v<-Au*Htank      #Total tank volume, m3, M26
   #manure storage is a estimate number, depth increase from 0.52 to 2.01 and 0.31 to 2.88
   # so annual increase is (2.01-0.52)+(2.88-0.31)= 4.06 m
   # 4.06 *Au = 1275.5, but the simulation shows 1275 is lower than measured, so I increased to 1400
-M.storage<-2158       #yearly manure storage volume, m3, M29 =P32,
+M.storage<-2180       #yearly manure storage volume, m3, M29 =P32,
+#It's a swine farm need to adjust the manure input rates. 
 Freeboard<-0.3        #freeboard, m, P34
 sludge<-0.5           #m, P36
 
@@ -40,7 +41,7 @@ ks<-0.7                     #soil thermal conductivity,W/mk, B42,
                             #Saturated sand = 2.2,Dry sand = 0.3,Oke, 1988
 annualT<-mean(c(Envir.daily$AirTmax1,Envir.daily$AirTmin1)) #for ini. soil temp, assume equal to mean annual air temp, B43
 annualT.K<-annualT+273.15                                   #soil temp at K, B44
-ini.S.Temp<-read.csv("input/Initial S Temp.csv",header=T)   #This is the soil temperature at 100 on June 15 2020
+ini.S.Temp<-read.csv("input/Initial S Temp.csv",header=T)   #This is the soil temperature at 100 on May 1 2020
 ini.S.Temp[300,1]<-annualT.K
 ini.S.Temp<-na_interpolation(ini.S.Temp,option="linear")#initial soil temp was assumed to annual air
 ini.S.Temp<-as.vector(ini.S.Temp[1:300,])
