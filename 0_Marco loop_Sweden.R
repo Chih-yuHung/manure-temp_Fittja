@@ -4,23 +4,23 @@ Location<-"Fittja"
 start.date<-"2020-5-1"  
 end.date<-"2023-4-30" 
 #insert multiple removal date in multiple years, can be different dates
-removal.dates<-as.numeric(as.Date(c("2020-8-25","2021-2-25"
-                                    ,"2020-8-25","2021-2-25"
-                                    ,"2021-8-25","2022-2-25"
-                                    ,"2022-9-25","2023-2-25"),by="days"))
-removal.end<-as.numeric(as.Date(c("2020-10-21","2021-5-25"
-                                  ,"2020-10-21","2021-5-25"
-                                  ,"2021-10-21","2022-5-25"
-                                  ,"2022-10-21","2023-5-25"),by="days"))
-removal.day<-unique(removal.end-removal.dates)
+removal.start<-as.numeric(as.Date(c("2020-8-25","2020-9-7","2021-2-25","2021-3-4"
+                                    ,"2020-8-25","2020-9-7","2021-2-25","2021-3-4"
+                                    ,"2021-8-25","2021-9-7","2022-2-25","2022-3-4"
+                                    ,"2022-8-25","2022-9-7","2023-2-25","2023-3-4"),by="days"))
+removal.end<-as.numeric(as.Date(c("2020-9-6","2020-10-21","2021-3-3","2021-4-30"
+                                  ,"2020-9-6","2020-10-21","2021-3-3","2021-4-30"
+                                  ,"2021-9-6","2021-10-21","2022-3-3","2022-4-30"
+                                  ,"2022-9-6","2022-10-21","2023-3-3","2023-4-30"),by="days"))
+removal.day<-unique(removal.end-removal.start)
 removal.duration<-list()
-    for (i in 3:8){ 
-        removal.duration[[i-2]]<-c(removal.dates[i]:removal.end[i])}
+    for (i in 5:16){ 
+        removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 #################Start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
 Envir.daily<-read.csv("input/daily env input_Fittja_May1.csv",header=T)
 #To produce an extra year for balance soil temperature
 Envir.daily<-Envir.daily[c(1:365,1:1095),]
-#to know how many days we have for the loop
+  #to know how many days we have for the loop
 d.length<-nrow(Envir.daily)
 #initial manure temp
 ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T) 
@@ -50,7 +50,7 @@ wind.v<-Envir.daily$wind[i]   #daily wind speed at 2m, m/h
 wind.f<-(2.36+1.67*wind.v)*Au^(-0.05)
 cc<-min(Envir.daily$cloud[i]*1.5,1) #cloud clover
 precip.d<-Envir.daily$precip[i]/1000
-source("3.1.Alpha.s_adjustment.R",echo=F)
+#source("3.1.Alpha.s_adjustment.R",echo=F)
 RH6<-Envir.daily$RH.6[i]
 RH15<-Envir.daily$RH.15[i]
 ####################Manure depth adjustment
@@ -59,26 +59,27 @@ if (sum(i==365|i==730|i==1095|i==1460)==1){
 M.depth<-0.67
 Zmmax<-M.depth
 }
-# #ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T)
-# #ini.M.Temp<-ini.M.Temp[,"Initial.Temp"]
-# #write.xlsx(S.Temp[,288], file=paste(Location,".xlsx"), sheetName="ini.S.Temp", row.names=FALSE)
 
 # If current date = removal dates then update depth and average temperature
-if(sum(removal.dates[c(3,5,7)] == Output$`Date ID`[i]) == 1) {
+if(sum(removal.start[c(5,9,13)] == Output$`Date ID`[i]) == 1) {
     removal.depth.d<-(M.depth-removal.depth[1])/removal.day[1] #the difference between the peak and the minimum 
     cat(paste("manure removal date =",i))
     }
-# if(Output$`Date ID`[i] %in% removal.duration[[1]]|
-#    Output$`Date ID`[i] %in% removal.duration[[3]]|
-#    Output$`Date ID`[i] %in% removal.duration[[5]]) {
-#     M.depth<-M.depth-removal.depth.d
-#     Zmmax<-M.depth
-# }
-if(sum(removal.dates[c(4,6,8)] == Output$`Date ID`[i]) == 1) {
+
+if(sum(removal.start[c(6,10,14)] == Output$`Date ID`[i]) == 1) {
    removal.depth.d<-(M.depth-removal.depth[2])/removal.day[2]    
     cat(paste("manure removal date =",i))
 }
 
+if(sum(removal.start[c(7,11,15)] == Output$`Date ID`[i]) == 1) {
+  removal.depth.d<-(M.depth-removal.depth[3])/removal.day[3]    
+  cat(paste("manure removal date =",i))
+}
+
+if(sum(removal.start[c(8,12,16)] == Output$`Date ID`[i]) == 1) {
+  removal.depth.d<-(M.depth-removal.depth[4])/removal.day[4]    
+  cat(paste("manure removal date =",i))
+}
     #ini.M.Temp<-c(rep(Avg.M.temp+273.15,30)) #Update all the temperatures to average temperature
     #it's Avg.M.temp, I am not sure why use this number
 
@@ -112,20 +113,31 @@ Output[i,11]<-sum(q.net.rad)  #Net solar radiation, F106:KG106
         
 #daily changing depth of manure for next day, L32<-L37
 if (Output$`Date ID`[i] %in% removal.duration[[1]]|
-   Output$`Date ID`[i] %in% removal.duration[[3]]|
-   Output$`Date ID`[i] %in% removal.duration[[5]]) {
+    Output$`Date ID`[i] %in% removal.duration[[5]]|
+    Output$`Date ID`[i] %in% removal.duration[[9]]) {
     M.depth<-M.depth-removal.depth.d
     Zmmax<-M.depth
 } else if(Output$`Date ID`[i] %in% removal.duration[[2]]|
-          Output$`Date ID`[i] %in% removal.duration[[4]]|
-          Output$`Date ID`[i] %in% removal.duration[[6]]) {
+          Output$`Date ID`[i] %in% removal.duration[[6]]|
+          Output$`Date ID`[i] %in% removal.duration[[10]]) {
     M.depth<-M.depth-removal.depth.d
     Zmmax<-M.depth
+} else if(Output$`Date ID`[i] %in% removal.duration[[3]]|
+           Output$`Date ID`[i] %in% removal.duration[[7]]|
+           Output$`Date ID`[i] %in% removal.duration[[11]]) {
+  M.depth<-M.depth-removal.depth.d
+  Zmmax<-M.depth
+} else if(Output$`Date ID`[i] %in% removal.duration[[4]]|
+           Output$`Date ID`[i] %in% removal.duration[[8]]|
+           Output$`Date ID`[i] %in% removal.duration[[12]]) {
+  M.depth<-M.depth-removal.depth.d
+  Zmmax<-M.depth
 } else {
 M.depth<-M.depth+depthchange.d
 Zmmax<-M.depth    
 print(mean(light.d))
 }
+
 #Save the new temperatures
 #In the sheet, it save a final temp to R60:R89, this was not used, so I skipped it.
 ini.M.Temp<-Final.M.Temp
@@ -169,10 +181,6 @@ daily.data<-as.data.frame(cbind(DOY,manure.depth,manure.temp))
 # daily.Sb.data<-as.data.frame(cbind(DOY,Sb.daily,Sb.daily.noshade,Sd.daily,Sd.daily.noshade,qnet,qnet.noshade))
 
 #output to an excel file
-setwd("C:/AAFC/Project 3_Sweden/3. Results/")
-#write.xlsx(Output, file=paste(Location,".sb.xlsx"), sheetName="Output1", row.names=FALSE)
-#write.xlsx(Output.tank, file=paste(Location,".sb.xlsx"), sheetName="Output2", append=TRUE, row.names=FALSE)
-write.csv(Output,paste(Location,Sys.Date(),".csv",sep=""),row.names = FALSE)
-#write.csv(daily.data,paste(Location,"_daily.csv",sep=""),row.names = FALSE)
-#write.csv(daily.Sb.data,paste(Location,"_daily_Sb.csv",sep=""),row.names = FALSE)
+write.csv(Output,paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/"
+                       ,Location,Sys.Date(),".csv",sep=""),row.names = FALSE)
 

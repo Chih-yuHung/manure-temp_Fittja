@@ -3,34 +3,26 @@ library(tidyverse)
 library(dplyr)
 library(hydroGOF) #NSE 
 
-#Sweden project
+#Sweden project-Fittja
 #To compare my simulation result to the measured data
 
 #output to an excel file
-setwd("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/")
 Envir.daily<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/2. Method/input/daily env input_Fittja_June15.csv",header=T)
 temp<-(Envir.daily$AirTmax1+Envir.daily$AirTmin1)/2 #Air Temp.avg
 temp<-temp[c(1:365,1:1095)]
 #observed data
-obs.nocover<-read.csv("temp.no.daily.csv",header=T) #measured manure temperature and soil temperature
-obs.nocover<-obs.nocover[rep(c(1:365),4),]
-obs.cover<-read.csv("temp.no.daily.csv",header=T) #measured manure temperature and soil temperature
-obs.cover<-obs.cover[rep(c(1:365),4),]
+obs.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/temp.Fittja.daily.csv",header=T) 
+obs.Fittja<-obs.Fittja[rep(c(1:365),4),]
 #simulated data before calibration
-sim.og<-read.csv("without cover/before calibration/Arlanda_noshade_before calibration.csv",header=T) #simulated manure temperature-without revision
-sim.og.c<-read.csv("with cover/before calibration/Arlanda_noshade_before calibration.csv",header=T) #simulated manure temperature-without revision
+sim.Fittja.og<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/Fittja2022-06-22.csv",header=T) 
 #simulated data after calibration and modification
-sim.nocover<-read.csv("without cover/Arlanda2022-01-25-2.csv",header=T)
-sim.cover<-read.csv("with cover/Arlanda2022-01-25_with cover.csv",header=T)
+sim.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/Fittja2022-06-22.csv",header=T)
 
 #Draw the last year only
 temp<-temp[1096:1460]
-obs.nocover<-obs.nocover[c(1096:1460),]
-obs.cover<-obs.cover[c(1096:1460),]
-sim.og<-sim.og[c(731:1095),]
-sim.og.c<-sim.og.c[c(731:1095),]
-sim.nocover<-sim.nocover[c(1096:1460),]
-sim.cover<-sim.cover[c(1096:1460),]
+obs.Fittja<-obs.Fittja[c(1096:1460),]
+sim.Fittja.og<-sim.Fittja.og[c(731:1095),]
+sim.Fittja<-sim.Fittja[c(1096:1460),]
 
 par(mfrow=c(3,1),mar=c(2,4,2,1))
 #For air temperature and soil temperature
@@ -45,15 +37,15 @@ par(mfrow=c(3,1),mar=c(2,4,2,1))
 #      ,labels=rep(c("7/1","10/12","1/1","4/25"),4))
 
 
-#For measured manure temperature no cover (avg.)
+#For measured manure temperature
 plot(temp,type="l",xaxt='n',col="gray",ylim=c(-15,30)) #Air temperature
-lines(obs.nocover$temp.avg,type="l") #manure avg. obs temperature
-lines(sim.og$Temperature.C,type="l",col="blue") #without shade calibration
-lines(sim.nocover$Temperature.C,col="red",lwd=2)
-legend(10,29,c("Tair","Tm-meausred","Tm-model dynamic","Tm-model constant"),col=c("grey","black","blue","red")
-       ,lty=1,lwd=2,ncol=4,bty="n")
-Axis(side=1, at=c(16,130,209,324,381,495,574,689,746,860,939,1054,1111,1225,1304,1419)
-     ,labels=rep(c("7/1","10/12","1/1","4/25"),4))
+lines(obs.Fittja$temp.avg,type="l") #manure avg. obs temperature
+lines(sim.Fittja.og$Temperature.C,type="l",col="blue",lwd=2) #without shade calibration
+lines(sim.Fittja$Temperature.C,col="red",lwd=2)
+legend(10,29,c("Tair","Tm-meausred","Tm-model og","Tm-model shade"),col=c("grey","black","blue","red")
+       ,lty=1,lwd=2,ncol=2,bty="n")
+Axis(side=1, at=c(1,93,185,277)
+     ,labels=c("5/1","8/1","11/1","2/1"))
 
 
 #For measured manure temperature with cover (avg.)

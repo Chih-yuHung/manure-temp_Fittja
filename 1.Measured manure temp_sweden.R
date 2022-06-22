@@ -100,6 +100,15 @@ for (i in 1:length(temp.daily$DOY)){
 # colnames(temp.cover.daily)[13:14]<-c("Stemp10","Stemp50")
 # colnames(temp.no.daily)[13:14]<-c("Stemp10","Stemp50")
 
+#The data is from 4/30-Feb27, But I want to have May 1 - Apr30
+#I left Feb 28 -Apr 30 empty. 
+DAY<-as.character(as.Date(0:61,origin = "2021-02-28"))
+DAY<-as.data.frame(matrix(unlist(strsplit(DAY,split="-")),ncol=3,byrow=TRUE))
+DAY<-cbind(DAY,c(59:120))
+colnames(DAY)<-c("Year","Month","Day","DOY")
+DAY<-type.convert(DAY)
+temp.daily <- temp.daily %>% full_join(DAY)
+temp.daily<-temp.daily[-1,]
 # #Save the daily data out.
 write.csv(temp.daily,"C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/temp.Fittja.daily.csv") # with cover
 

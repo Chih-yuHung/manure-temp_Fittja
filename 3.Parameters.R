@@ -8,20 +8,21 @@ Tank.v<-Au*Htank      #Total tank volume, m3, M26
   #manure storage is a estimate number, depth increase from 0.52 to 2.01 and 0.31 to 2.88
   # so annual increase is (2.01-0.52)+(2.88-0.31)= 4.06 m
   # 4.06 *Au = 1275.5, but the simulation shows 1275 is lower than measured, so I increased to 1400
-M.storage<-2180       #yearly manure storage volume, m3, M29 =P32,
+M.storage<-2300       #yearly manure storage volume, m3, M29 =P32,
 #It's a swine farm need to adjust the manure input rates. 
 Freeboard<-0.3        #freeboard, m, P34
 sludge<-0.5           #m, P36
 
 #Manure depth
 M.depth<-0.67                  #This is the initial manure depth, m, L32
-removal.depth<-c(0.730,1.400)  #the depth after removal, m, S52
+removal.depth<-c(1.7,0.73,2.31,1.70)  #the depth after removal, m, S52
 
 #Manure properties, R26:29
 Total.solid<-8                #It barely influences the manure temperature 
-  #Input manure temperature
-Avg.Barn.temp<-7.12           #degree C, avg. annual barn temp, L46, I assumed annual air temperature here 7.12
-Barn.temp.amp<-5              #degree C, amplitude of annual temp, L47
+#Input manure temperature
+annualT<-mean(c(Envir.daily$AirTmax1,Envir.daily$AirTmin1)) #for ini. soil temp, assume equal to mean annual air temp, B43
+Avg.Barn.temp<-annualT        #degree C, avg. annual barn temp, L46, I assumed annual air temperature here 7.12
+Barn.temp.amp<-0              #degree C, amplitude of annual temp, L47
 Temp.cost<-4.32               #Temp phase constant, L48, barely influence the result
                               #15.2 and 3 for the last result
 
@@ -39,7 +40,6 @@ den.s<-1800                 #Soil density, kg/m3, B41,Saturated Clay = 2000,
 ks<-0.7                     #soil thermal conductivity,W/mk, B42, 
                             #Saturated Clay = 1.58, Dry clay = 0.25, 
                             #Saturated sand = 2.2,Dry sand = 0.3,Oke, 1988
-annualT<-mean(c(Envir.daily$AirTmax1,Envir.daily$AirTmin1)) #for ini. soil temp, assume equal to mean annual air temp, B43
 annualT.K<-annualT+273.15                                   #soil temp at K, B44
 ini.S.Temp<-read.csv("input/Initial S Temp.csv",header=T)   #This is the soil temperature at 100 on May 1 2020
 ini.S.Temp[300,1]<-annualT.K
