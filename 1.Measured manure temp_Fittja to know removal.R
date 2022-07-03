@@ -12,3 +12,6 @@ temp[,i+5]<-c(0,ifelse(abs(diff(temp[,i+1]))>2,1,0))
 subset(temp, V6 == 1, select = Time)
 subset(temp, V7 == 1, select = Time)
 subset(temp, V8 == 1, select = Time)
+
+#It looks like there is a removal event in August
+#about August 13

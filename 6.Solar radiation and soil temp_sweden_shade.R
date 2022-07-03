@@ -131,7 +131,8 @@ depth.factor<-depthchange.d/M.depth                   #N204
 delta.z.new<-delta.z*(1+depth.factor)                 #L209:238
 M.volume.new<-delta.z.new*Au                          #new manure volume,M209:M238
 #incoming Manure temp
-In.M.temp<-Avg.Barn.temp+Barn.temp.amp*sin(2*pi/365*T.day+Temp.cost) #Incoming manure temp, L49,L39
+#In.M.temp<-Avg.Barn.temp+Barn.temp.amp*sin(2*pi/365*T.day+Temp.cost) #Incoming manure temp, L49,L39
+In.M.temp<-(AirTmax1+AirTmin1)/2
 #Enthalpy after manure added, N209:N238
 Enthalpy.c.new<-Enthalpy.c+(M.volume.new-M.volume)*rho.m*((In.M.temp*C.pm)+272.15*C.pm+C.pm.fusion)/1000000
 Enthalpy.V<-Enthalpy.c.new/M.volume.new  #Enthalpy/V, O209:O238

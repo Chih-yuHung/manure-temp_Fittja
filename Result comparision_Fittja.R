@@ -16,7 +16,7 @@ obs.Fittja<-obs.Fittja[rep(c(1:365),4),]
 #simulated data before calibration
 sim.Fittja.og<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/Fittja2022-06-22.csv",header=T) 
 #simulated data after calibration and modification
-sim.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/Fittja2022-06-30.csv",header=T)
+sim.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/Fittja2022-07-02.csv",header=T)
 
 #Draw the last year only
 temp<-temp[1096:1460]
@@ -24,7 +24,7 @@ obs.Fittja<-obs.Fittja[c(1096:1460),]
 sim.Fittja.og<-sim.Fittja.og[c(731:1095),]
 sim.Fittja<-sim.Fittja[c(1096:1460),]
 
-par(mfrow=c(3,1),mar=c(2,4,2,1))
+#par(mfrow=c(3,1),mar=c(2,4,2,1))
 #For air temperature and soil temperature
 # plot(temp,type="l",xaxt='n',col="gray",ylim=c(-15,30)) #Air temperature
 # lines(result.m$Stemp50,col="red") #measured soil temperature at 50 cm

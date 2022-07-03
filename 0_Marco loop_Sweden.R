@@ -4,14 +4,14 @@ Location<-"Fittja"
 start.date<-"2020-5-1"  
 end.date<-"2023-4-30" 
 #insert multiple removal date in multiple years, can be different dates
-removal.start<-as.numeric(as.Date(c("2020-9-5","2020-10-2","2021-2-27","2021-4-25"
-                                    ,"2020-9-5","2020-10-2","2021-2-27","2021-4-25"
-                                    ,"2021-9-5","2021-10-2","2022-2-27","2022-4-25"
-                                    ,"2022-9-5","2022-10-2","2023-2-27","2023-4-25"),by="days"))
-removal.end<-as.numeric(as.Date(c("2020-9-7","2020-10-5","2021-3-3","2021-4-29"
-                                  ,"2020-9-7","2020-10-5","2021-3-3","2021-4-29"
-                                  ,"2021-9-7","2021-10-5","2022-3-3","2022-4-29"
-                                  ,"2022-9-7","2022-10-5","2023-3-3","2023-4-29"),by="days"))
+removal.start<-as.numeric(as.Date(c("2020-8-12","2020-10-2","2021-2-27","2021-4-25"
+                                    ,"2020-8-12","2020-10-2","2021-2-27","2021-4-25"
+                                    ,"2021-8-12","2021-10-2","2022-2-27","2022-4-25"
+                                    ,"2022-8-12","2022-10-2","2023-2-27","2023-4-25"),by="days"))
+removal.end<-as.numeric(as.Date(c("2020-8-13","2020-10-5","2021-3-3","2021-4-29"
+                                  ,"2020-8-13","2020-10-5","2021-3-3","2021-4-29"
+                                  ,"2021-8-13","2021-10-5","2022-3-3","2022-4-29"
+                                  ,"2022-8-13","2022-10-5","2023-3-3","2023-4-29"),by="days"))
 removal.day<-(removal.end-removal.start)[1:4]+1
 removal.duration<-list()
     for (i in 5:16){ 
@@ -181,6 +181,6 @@ daily.data<-as.data.frame(cbind(DOY,manure.depth,manure.temp))
 # daily.Sb.data<-as.data.frame(cbind(DOY,Sb.daily,Sb.daily.noshade,Sd.daily,Sd.daily.noshade,qnet,qnet.noshade))
 
 #output to an excel file
-write.csv(Output,paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/"
+write.csv(Output,paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/"
                        ,Location,Sys.Date(),".csv",sep=""),row.names = FALSE)
 
