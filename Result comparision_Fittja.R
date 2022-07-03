@@ -16,7 +16,7 @@ obs.Fittja<-obs.Fittja[rep(c(1:365),4),]
 #simulated data before calibration
 sim.Fittja.og<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/Fittja2022-06-22.csv",header=T) 
 #simulated data after calibration and modification
-sim.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/Fittja2022-06-22.csv",header=T)
+sim.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/Fittja2022-06-30.csv",header=T)
 
 #Draw the last year only
 temp<-temp[1096:1460]

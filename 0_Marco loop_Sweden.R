@@ -4,15 +4,15 @@ Location<-"Fittja"
 start.date<-"2020-5-1"  
 end.date<-"2023-4-30" 
 #insert multiple removal date in multiple years, can be different dates
-removal.start<-as.numeric(as.Date(c("2020-8-25","2020-9-7","2021-2-25","2021-3-4"
-                                    ,"2020-8-25","2020-9-7","2021-2-25","2021-3-4"
-                                    ,"2021-8-25","2021-9-7","2022-2-25","2022-3-4"
-                                    ,"2022-8-25","2022-9-7","2023-2-25","2023-3-4"),by="days"))
-removal.end<-as.numeric(as.Date(c("2020-9-6","2020-10-21","2021-3-3","2021-4-30"
-                                  ,"2020-9-6","2020-10-21","2021-3-3","2021-4-30"
-                                  ,"2021-9-6","2021-10-21","2022-3-3","2022-4-30"
-                                  ,"2022-9-6","2022-10-21","2023-3-3","2023-4-30"),by="days"))
-removal.day<-unique(removal.end-removal.start)
+removal.start<-as.numeric(as.Date(c("2020-9-5","2020-10-2","2021-2-27","2021-4-25"
+                                    ,"2020-9-5","2020-10-2","2021-2-27","2021-4-25"
+                                    ,"2021-9-5","2021-10-2","2022-2-27","2022-4-25"
+                                    ,"2022-9-5","2022-10-2","2023-2-27","2023-4-25"),by="days"))
+removal.end<-as.numeric(as.Date(c("2020-9-7","2020-10-5","2021-3-3","2021-4-29"
+                                  ,"2020-9-7","2020-10-5","2021-3-3","2021-4-29"
+                                  ,"2021-9-7","2021-10-5","2022-3-3","2022-4-29"
+                                  ,"2022-9-7","2022-10-5","2023-3-3","2023-4-29"),by="days"))
+removal.day<-(removal.end-removal.start)[1:4]+1
 removal.duration<-list()
     for (i in 5:16){ 
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
@@ -50,7 +50,7 @@ wind.v<-Envir.daily$wind[i]   #daily wind speed at 2m, m/h
 wind.f<-(2.36+1.67*wind.v)*Au^(-0.05)
 cc<-min(Envir.daily$cloud[i]*1.5,1) #cloud clover
 precip.d<-Envir.daily$precip[i]/1000
-#source("3.1.Alpha.s_adjustment.R",echo=F)
+source("3.1.Alpha.s_adjustment.R",echo=F)
 RH6<-Envir.daily$RH.6[i]
 RH15<-Envir.daily$RH.15[i]
 ####################Manure depth adjustment
@@ -135,7 +135,7 @@ if (Output$`Date ID`[i] %in% removal.duration[[1]]|
 } else {
 M.depth<-M.depth+depthchange.d
 Zmmax<-M.depth    
-print(mean(light.d))
+print(M.depth)
 }
 
 #Save the new temperatures

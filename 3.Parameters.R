@@ -15,14 +15,14 @@ sludge<-0.5           #m, P36
 
 #Manure depth
 M.depth<-0.67                  #This is the initial manure depth, m, L32
-removal.depth<-c(1.7,0.73,2.31,1.70)  #the depth after removal, m, S52
+removal.depth<-c(1.70,0.5,2.31,1.40)  #the depth after removal, m, S52
 
 #Manure properties, R26:29
 Total.solid<-8                #It barely influences the manure temperature 
 #Input manure temperature
 annualT<-mean(c(Envir.daily$AirTmax1,Envir.daily$AirTmin1)) #for ini. soil temp, assume equal to mean annual air temp, B43
 Avg.Barn.temp<-annualT        #degree C, avg. annual barn temp, L46, I assumed annual air temperature here 7.12
-Barn.temp.amp<-0              #degree C, amplitude of annual temp, L47
+Barn.temp.amp<-12             #degree C, amplitude of annual temp, L47
 Temp.cost<-4.32               #Temp phase constant, L48, barely influence the result
                               #15.2 and 3 for the last result
 
