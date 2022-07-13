@@ -1,7 +1,7 @@
 #This file calculate heat transfer and it iterate everyday
 
 #Environmental input
-ReL<-wind*ri/Vair                                   #Reynold's number, unitless,F42
+ReL<-wind*ri/Vair*1.3                                  #Reynold's number, unitless,F42
 Nu<-ifelse(ReL<5*10^5,0.453*(ReL^(0.5))*(Pr^(1/3))  #Nusselt Number,F43
            ,(0.037*(ReL^(4/5))-871)*(Pr^(1/3)))    
 hcv.ms<-(Nu*ka)/ri                                  #Heat transfer coefficient,F44       
@@ -13,6 +13,7 @@ sin.alpha<-pmax((cos(deg2rad(L))*cos(deg2rad(declination.s))
           *sin(deg2rad(declination.s))),0)                   # sunlight degree, F102:KG102
 
 #This's a part to calculate shadow area due to the tank wall, it's not in Rennie, 2017
+if (shadow.effect == 1) {
 wall.h<-Htank-M.depth                              # the wall height above manure surface, m
 cot.alpha<-(1-sin.alpha^2)^(1/2)/sin.alpha
 cos.theta<-(wall.h*cot.alpha/2)/ri                 # the angle in the circle-circle intersection, a numeric
@@ -30,6 +31,13 @@ Sd<-ifelse(sin.alpha>0,0.3*(1-tau^m)*Eb*sin.alpha,0) # Diffusive radiation (w/m2
 Sr.total<-sum(Sb,Sd)                                 # F322, Total solar radiation
 q.net.rad<-alpha.s*((Sb+Sd)/Sr.total)*((SR*1000*1000)/T.delta) #Net solar radiation, F106:KG106
 q.net.rad<-q.net.rad*light.d                         #apply shade coefficient  
+} else {
+m<-ifelse(sin.alpha>0,Pa/(101325*sin.alpha),0)       # Optical air mass number, #F103-KG103
+Sb<-ifelse(sin.alpha>0, Eb*(tau^m)*sin.alpha,0)      # solar bean radiation (W/m2),F104-KG104
+Sd<-ifelse(sin.alpha>0,0.3*(1-tau^m)*Eb*sin.alpha,0) # Diffusive radiation (w/m2),F105-KG105
+Sr.total<-sum(Sb,Sd)                                 # F322, Total solar radiation
+q.net.rad<-alpha.s*((Sb+Sd)/Sr.total)*((SR*1000*1000)/T.delta) #Net solar radiation, F106:KG106
+}
 
 #Relative humidity from measured data
 #Rh estimated based on RH6 and RH15 with T.hour,F110:KG110

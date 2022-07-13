@@ -16,7 +16,11 @@ removal.day<-(removal.end-removal.start)[1:4]+1
 removal.duration<-list()
     for (i in 5:16){ 
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
-#################Start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
+
+#Shade effect or not
+shadow.effect<-0  #1 with shadow, 0 is without
+
+#start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
 Envir.daily<-read.csv("input/daily env input_Fittja_May1.csv",header=T)
 #To produce an extra year for balance soil temperature
 Envir.daily<-Envir.daily[c(1:365,1:1095),]
@@ -50,7 +54,9 @@ wind.v<-Envir.daily$wind[i]   #daily wind speed at 2m, m/h
 wind.f<-(2.36+1.67*wind.v)*Au^(-0.05)
 cc<-min(Envir.daily$cloud[i]*1.5,1) #cloud clover
 precip.d<-Envir.daily$precip[i]/1000
+if(shadow.effect == 1) {
 source("3.1.Alpha.s_adjustment.R",echo=F)
+}
 RH6<-Envir.daily$RH.6[i]
 RH15<-Envir.daily$RH.15[i]
 ####################Manure depth adjustment
@@ -180,7 +186,12 @@ daily.data<-as.data.frame(cbind(DOY,manure.depth,manure.temp))
 # DOY<-rep(1:365,each=288)
 # daily.Sb.data<-as.data.frame(cbind(DOY,Sb.daily,Sb.daily.noshade,Sd.daily,Sd.daily.noshade,qnet,qnet.noshade))
 
-#output to an excel file
+if (shadow.effect == 1) {
+#Shade/output to an excel file
 write.csv(Output,paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/"
                        ,Location,Sys.Date(),".csv",sep=""),row.names = FALSE)
-
+} else {
+  #Without shade/output to an excel file
+write.csv(Output,paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/original/"
+                       ,Location,Sys.Date(),".csv",sep=""),row.names = FALSE)
+}
