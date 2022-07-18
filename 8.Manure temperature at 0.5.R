@@ -1,5 +1,6 @@
-#This part retrieves simulated manure temperature at 0.5m or < 0.5m 
-#two part
+#This part retrieves the vertical manure temperature on 
+#May 1, Aug 1, Nov 1, and Feb 1. in the last year. 
+#
 if (M.depth<=0.5){
   M.temp0.5<-Final.M.Temp[30]   #The simulated M.temp is the temp at bottom
 } else {

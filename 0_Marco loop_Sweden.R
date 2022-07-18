@@ -18,7 +18,7 @@ removal.duration<-list()
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 
 #Shade effect or not
-shadow.effect<-0  #1 with shadow, 0 is without
+shadow.effect<-1  #1 with shadow effect, 0 is without
 
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
 Envir.daily<-read.csv("input/daily env input_Fittja_May1.csv",header=T)
@@ -37,7 +37,7 @@ source("4.Constants_sweden.R",echo = F)   #Constants no need to change
 #to store daily manure.temp in the 30 layers
 manure.temp<-c()
 manure.depth<-c()
-
+l<-2 # for temp on four dates
 #Start the simulation here. 
 starttime<-Sys.time()
 for (i in 1:d.length){
@@ -116,7 +116,14 @@ Output[i,8]<-M.volume.current #Daily manure volume(m3)
 Output[i,9]<-Evap.depth.d*100 #Daily Evaporation (cm)
 Output[i,10]<-precip.d*100 #Daily Precipitation (cm)
 Output[i,11]<-sum(q.net.rad)  #Net solar radiation, F106:KG106
-        
+
+#Write the results for the four dates at the last year
+#the four dates are May 1, Aug 1, Nov 1, Feb 1. 
+date.four<-as.numeric(as.Date(c("2022-5-1","2022-8-1","2022-11-1","2023-2-1"),by="days"))
+if (Output$`Date ID`[i] %in% date.four){
+  source("9.Manure temperature on four dates.R",echo = F)
+}
+
 #daily changing depth of manure for next day, L32<-L37
 if (Output$`Date ID`[i] %in% removal.duration[[1]]|
     Output$`Date ID`[i] %in% removal.duration[[5]]|
