@@ -119,7 +119,7 @@ Output[i,11]<-sum(q.net.rad)  #Net solar radiation, F106:KG106
 
 #Write the results for the four dates at the last year
 #the four dates are May 1, Aug 1, Nov 1, Feb 1. 
-date.four<-as.numeric(as.Date(c("2022-5-1","2022-8-1","2022-11-1","2023-2-1"),by="days"))
+date.four<-as.numeric(as.Date(c("2022-11-1","2022-12-1","2023-1-1","2023-2-1"),by="days"))
 if (Output$`Date ID`[i] %in% date.four){
   source("9.Manure temperature on four dates.R",echo = F)
 }

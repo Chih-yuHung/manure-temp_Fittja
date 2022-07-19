@@ -11,7 +11,7 @@ temp.four<-data.frame(depth1=c(1:30),
                       depth4=c(1:30),
                       temp4=rep(0,30))
 }
-temp.four[,l]<-Final.M.Temp-273.15
+temp.four[,l]<-M.temp.d
 temp.four[,l-1]<-cumsum(delta.z.new)
 l<-l+2
 

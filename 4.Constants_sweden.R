@@ -36,8 +36,8 @@ cell.size<-2                                        # cell size ratio, F60
 grid.c<-cell.size^(1/((cell.n/2)-1))-1              # grid constant, F58
 
 #Manure constant for enthalpy
-k.m<-0.6173-0.0069*Total.solid              # Manure thermal conductivity, W/(mK), B47
-C.pm<-4187.5-28.9*Total.solid               # Manure specific heat, J/kg K, B49,F49, was 4187.5
+k.m <- 0.6173-0.0069*Total.solid            # Manure thermal conductivity, W/(mK), B47
+C.pm<- 4187.5-28.9*Total.solid              # Manure specific heat, J/kg K, B49,F49, was 4187.5
 C.pm.fusion<-C.pm+334000                    # Frozen Manure specific heat-fusion, J/kg K, F48, 334000
 E.272<-272.15*rho.m*C.pm/10^6               # Enthalpy at 272.15 (MJ/m3),S202
 E.273<-E.272+(1*rho.m*C.pm.fusion)/10^6     # Enthalpy at 273.15 (MJ/m3),S203
