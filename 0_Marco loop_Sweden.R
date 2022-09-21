@@ -109,17 +109,18 @@ if(is.element(i,tail(1:d.length,n=365))){
 }
 
 #Write the results, only write after first year
-Output[i,6]<-Avg.M.temp.d #Daily manure temperature (C), before depth adjustment
+# Output[i,6]<-Avg.M.temp.d #Daily manure temperature (C), before depth adjustment
+# Output[i,7]<-M.depth*100  #Daily manure depth (cm)
+# Output[i,8]<-M.volume.current #Daily manure volume(m3)
+# Output[i,9]<-Evap.depth.d*100 #Daily Evaporation (cm)
+# Output[i,10]<-precip.d*100 #Daily Precipitation (cm)
+# Output[i,11]<-sum(q.net.rad)  #Net solar radiation, F106:KG106
+Output[i,6:11]<-c(Avg.M.temp.d,M.depth*100,M.volume.current,
+                  Evap.depth.d*100,precip.d*100,sum(q.net.rad))
 print(paste("Sequence",i,"And Manure temp",Avg.M.temp.d))
-Output[i,7]<-M.depth*100  #Daily manure depth (cm)
-Output[i,8]<-M.volume.current #Daily manure volume(m3)
-Output[i,9]<-Evap.depth.d*100 #Daily Evaporation (cm)
-Output[i,10]<-precip.d*100 #Daily Precipitation (cm)
-Output[i,11]<-sum(q.net.rad)  #Net solar radiation, F106:KG106
-
 #Write the results for the four dates at the last year
 #the four dates are May 1, Aug 1, Nov 1, Feb 1. 
-date.four<-as.numeric(as.Date(c("2022-11-1","2022-12-1","2023-1-1","2023-2-1"),by="days"))
+date.four<-as.numeric(as.Date(c("2022-6-18","2022-8-24","2022-9-7","2022-10-21"),by="days"))
 if (Output$`Date ID`[i] %in% date.four){
   source("9.Manure temperature on four dates.R",echo = F)
 }

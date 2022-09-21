@@ -126,6 +126,12 @@ for (j in 1:288) {
 }
 Ts[2:288]<-M.Temp[2:288] # don't know the purpose
 
+#Assumed the M.Temp is well mixed after every 5 day
+#because of manure input
+if (i %% 5 == 0) {
+  M.Temp[,288]<-mean(M.Temp[,288])
+}
+
 #Temp and depth adjustment, F200:Q238
 #Current enthalpy, J209:J238
 Enthalpy.c<-ifelse(M.Temp[,288]<272.15,M.Temp[,288]*rho.m*M.volume*C.pm/10^6
