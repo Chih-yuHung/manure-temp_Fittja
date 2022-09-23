@@ -5,17 +5,18 @@ Htank<-3.6            #height of tank, m, B29
 ri<-11                #Inner radius of tank, m, B32
 Au<-ri^2*pi           #tank area, m2, F55
 Tank.v<-Au*Htank      #Total tank volume, m3, M26
-  #manure storage is a estimate number, depth increase from 0.52 to 2.01 and 0.31 to 2.88
-  # so annual increase is (2.01-0.52)+(2.88-0.31)= 4.06 m
-  # 4.06 *Au = 1275.5, but the simulation shows 1275 is lower than measured, so I increased to 1400
-M.storage<-2600       #yearly manure storage volume, m3, M29 =P32,
+#manure storage is a estimate number, maximum depth was 3.1 m in Aug
+M.storage<-2800       #yearly manure storage volume, m3, M29 =P32,because total manure
+                      # removals were 2800-3000 m3 in 2018-2021
 #It's a swine farm need to adjust the manure input rates. 
 Freeboard<-0.3        #freeboard, m, P34
 sludge<-0.5           #m, P36
 
 #Manure depth
 M.depth<-0.67                  #This is the initial manure depth, m, L32
-removal.depth<-c(0.5,0.5,2.31,1.40)  #the depth after removal, m, S52
+removal.depth<-c(1.87,0.18,0.15,0.93)  #the depth after removal, m, S52
+
+
 
 #Manure properties, R26:29
 Total.solid<-0.001                #It barely influences the manure temperature 

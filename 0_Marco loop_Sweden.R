@@ -4,14 +4,14 @@ Location<-"Fittja"
 start.date<-"2020-5-1"  
 end.date<-"2023-4-30" 
 #insert multiple removal date in multiple years, can be different dates
-removal.start<-as.numeric(as.Date(c("2020-8-12","2020-10-2","2021-2-27","2021-4-25"
-                                    ,"2020-8-12","2020-10-2","2021-2-27","2021-4-25"
-                                    ,"2021-8-12","2021-10-2","2022-2-27","2022-4-25"
-                                    ,"2022-8-12","2022-10-2","2023-2-27","2023-4-25"),by="days"))
-removal.end<-as.numeric(as.Date(c("2020-8-13","2020-10-5","2021-3-3","2021-4-29"
-                                  ,"2020-8-13","2020-10-5","2021-3-3","2021-4-29"
-                                  ,"2021-8-13","2021-10-5","2022-3-3","2022-4-29"
-                                  ,"2022-8-13","2022-10-5","2023-3-3","2023-4-29"),by="days"))
+removal.start<-as.numeric(as.Date(c("2020-7-8","2020-10-2","2021-10-30","2021-4-12"
+                                    ,"2020-7-8","2020-10-2","2021-10-30","2021-4-12"
+                                    ,"2021-7-8","2021-10-2","2022-10-30","2022-4-12"
+                                    ,"2022-7-8","2022-10-2","2023-10-30","2023-4-12"),by="days"))
+removal.end<-as.numeric(as.Date(c("2020-7-9","2020-10-4","2021-10-31","2021-4-13"
+                                  ,"2020-7-9","2020-10-4","2021-10-31","2021-4-13"
+                                  ,"2021-7-9","2021-10-4","2022-10-31","2022-4-13"
+                                  ,"2022-7-9","2022-10-4","2023-10-31","2023-4-13"),by="days"))
 removal.day<-(removal.end-removal.start)[1:4]+1
 removal.duration<-list()
     for (i in 5:16){ 
@@ -24,10 +24,10 @@ shadow.effect<-1  #1 with shadow effect, 0 is without
 Envir.daily<-read.csv("input/daily env input_Fittja_May1.csv",header=T)
 #To produce an extra year for balance soil temperature
 Envir.daily<-Envir.daily[c(1:365,1:1095),]
-  #to know how many days we have for the loop
+#to know how many days we have for the loop
 d.length<-nrow(Envir.daily)
 #initial manure temp
-ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T) 
+ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T)
 ini.M.Temp<-ini.M.Temp[,"Initial.Temp"] #change to vector
 
 #Read parameters
