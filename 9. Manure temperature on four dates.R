@@ -1,7 +1,7 @@
 #This part retrieves the vertical manure temperature at various depth on 
 #May 1, Aug 1, Nov 1, and Feb 1. in the last year. 
 #Create a dataframe
-if (l==2){
+if (four.date==1){
 temp.four<-data.frame(depth1=c(1:30),
                       temp1=rep(0,30),
                       depth2=c(1:30),
@@ -11,8 +11,8 @@ temp.four<-data.frame(depth1=c(1:30),
                       depth4=c(1:30),
                       temp4=rep(0,30))
 }
-temp.four[,l]<-M.temp.d
-temp.four[,l-1]<-cumsum(delta.z.new)
+temp.four[,2]<-M.temp.d
+temp.four[,2-1]<-cumsum(delta.z.new)
 l<-l+2
 
 if (shadow.effect == 1) {

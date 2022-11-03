@@ -5,7 +5,7 @@ Tmean<-(AirTmax1+AirTmin1)/2
 snow<-c() # cm
 if (Tmean <=0){
   snow     <- precip.d*100*10 #precipt.d is m, turn to cm and *10 to snow  
-  albedo   <- (0.9280*snow/(0.0429+snow)) 
+  albedo   <- (0.9280*snow/(0.0429+snow)) #Pervocich et al. 2017
   max(0.55,albedo) # the minimum is 0.55 follow we did in the DNDC
   alpha.s  <- 1-albedo
 }else {

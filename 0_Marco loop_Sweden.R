@@ -4,21 +4,21 @@ Location<-"Fittja"
 start.date<-"2020-5-1"  
 end.date<-"2023-4-30" 
 #insert multiple removal date in multiple years, can be different dates
-removal.start<-as.numeric(as.Date(c("2020-7-8","2020-10-2","2021-10-30","2021-4-12"
-                                    ,"2020-7-8","2020-10-2","2021-10-30","2021-4-12"
-                                    ,"2021-7-8","2021-10-2","2022-10-30","2022-4-12"
-                                    ,"2022-7-8","2022-10-2","2023-10-30","2023-4-12"),by="days"))
-removal.end<-as.numeric(as.Date(c("2020-7-9","2020-10-4","2021-10-31","2021-4-13"
-                                  ,"2020-7-9","2020-10-4","2021-10-31","2021-4-13"
-                                  ,"2021-7-9","2021-10-4","2022-10-31","2022-4-13"
-                                  ,"2022-7-9","2022-10-4","2023-10-31","2023-4-13"),by="days"))
+removal.start<-as.numeric(as.Date(c("2020-7-8","2020-10-2","2020-10-30","2021-4-12"
+                                    ,"2020-7-8","2020-10-2","2020-10-30","2021-4-12"
+                                    ,"2021-7-8","2021-10-2","2021-10-30","2022-4-12"
+                                    ,"2022-7-8","2022-10-2","2022-10-30","2023-4-12"),by="days"))
+removal.end<-as.numeric(as.Date(c("2020-7-9","2020-10-4","2020-10-31","2021-4-13"
+                                  ,"2020-7-9","2020-10-4","2020-10-31","2021-4-13"
+                                  ,"2021-7-9","2021-10-4","2021-10-31","2022-4-13"
+                                  ,"2022-7-9","2022-10-4","2022-10-31","2023-4-13"),by="days"))
 removal.day<-(removal.end-removal.start)[1:4]+1
 removal.duration<-list()
     for (i in 5:16){ 
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 
 #Shade effect or not
-shadow.effect<-1  #1 with shadow effect, 0 is without
+shadow.effect<-0  #1 with shadow effect, 0 is without
 
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
 Envir.daily<-read.csv("input/daily env input_Fittja_May1.csv",header=T)
@@ -31,13 +31,12 @@ ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T)
 ini.M.Temp<-ini.M.Temp[,"Initial.Temp"] #change to vector
 
 #Read parameters
-source("3.Parameters.R",echo=F)           #Parameters we can change
-source("4.Constants_sweden.R",echo = F)   #Constants no need to change
+source("3. Parameters.R",echo=F)           #Parameters we can change
+source("4. Constants_Fittja.R",echo = F)   #Constants no need to change
 
 #to store daily manure.temp in the 30 layers
 manure.temp<-c()
 manure.depth<-c()
-l<-2 # for temp on four dates
 #Start the simulation here. 
 starttime<-Sys.time()
 for (i in 1:d.length){
@@ -52,52 +51,24 @@ SR<-Envir.daily$SR[i]
 wind<-Envir.daily$wind[i]
 wind.v<-Envir.daily$wind[i]   #daily wind speed at 2m, m/h
 wind.f<-(2.36+1.67*wind.v)*Au^(-0.05)
-cc<-min(Envir.daily$cloud[i]*1.5,1) #cloud clover
+cc<-min(Envir.daily$cloud[i],1) #cloud clover
 precip.d<-Envir.daily$precip[i]/1000
 if(shadow.effect == 1) {
-source("3.1.Alpha.s_adjustment.R",echo=F)
+source("3.1. Alpha.s_adjustment.R",echo=F)
 }
 RH6<-Envir.daily$RH.6[i]
 RH15<-Envir.daily$RH.15[i]
-####################Manure depth adjustment
-#Reset M.depth and ini.M.temp after soil temperature stabilization
-if (sum(i==365|i==730|i==1095|i==1460)==1){
-M.depth<-0.67
-Zmmax<-M.depth
-}
 
-# If current date = removal dates then update depth and average temperature
-if(sum(removal.start[c(5,9,13)] == Output$`Date ID`[i]) == 1) {
-    removal.depth.d<-(M.depth-removal.depth[1])/removal.day[1] #the difference between the peak and the minimum 
-    cat(paste("manure removal date =",i))
-    }
-
-if(sum(removal.start[c(6,10,14)] == Output$`Date ID`[i]) == 1) {
-   removal.depth.d<-(M.depth-removal.depth[2])/removal.day[2]    
-    cat(paste("manure removal date =",i))
-}
-
-if(sum(removal.start[c(7,11,15)] == Output$`Date ID`[i]) == 1) {
-  removal.depth.d<-(M.depth-removal.depth[3])/removal.day[3]    
-  cat(paste("manure removal date =",i))
-}
-
-if(sum(removal.start[c(8,12,16)] == Output$`Date ID`[i]) == 1) {
-  removal.depth.d<-(M.depth-removal.depth[4])/removal.day[4]    
-  cat(paste("manure removal date =",i))
-}
-    #ini.M.Temp<-c(rep(Avg.M.temp+273.15,30)) #Update all the temperatures to average temperature
-    #it's Avg.M.temp, I am not sure why use this number
-
-
+#inital depth and removal amount
+source("5.1. Manure volume_initial depth and removal amount.R",echo=F)
 #To calculate manure volume, encoding to be change if use mac
-source("5.Manure volume_sweden.R",echo=F)
+source("5. Manure volume_Fittja.R",echo=F)
 #print(paste("after volume",Sys.time()-starttime))
 #To calculate solar radiation, soil temp, and manure temp at 300 sec steps.
-source("6.Solar radiation and soil temp_sweden_shade.R",echo=F)
+source("6. Solar radiation and soil temp_Fittja_shade.R",echo=F)
 #print(paste("after solar",Sys.time()-starttime))
 #To calculate final hourly temp
-source("7.hourly temp_sweden.R",echo=F)
+source("7. hourly temp_Fittja.R",echo=F)
 
 #To obtain temp and depth at the end of the day
 # I need manure temperature in different depth every day for the last year
@@ -109,48 +80,18 @@ if(is.element(i,tail(1:d.length,n=365))){
 }
 
 #Write the results, only write after first year
-# Output[i,6]<-Avg.M.temp.d #Daily manure temperature (C), before depth adjustment
-# Output[i,7]<-M.depth*100  #Daily manure depth (cm)
-# Output[i,8]<-M.volume.current #Daily manure volume(m3)
-# Output[i,9]<-Evap.depth.d*100 #Daily Evaporation (cm)
-# Output[i,10]<-precip.d*100 #Daily Precipitation (cm)
-# Output[i,11]<-sum(q.net.rad)  #Net solar radiation, F106:KG106
 Output[i,6:11]<-c(Avg.M.temp.d,M.depth*100,M.volume.current,
                   Evap.depth.d*100,precip.d*100,sum(q.net.rad))
 print(paste("Sequence",i,"And Manure temp",Avg.M.temp.d))
 #Write the results for the four dates at the last year
 #the four dates are May 1, Aug 1, Nov 1, Feb 1. 
+four.date<-1 # for temp on four dates
 date.four<-as.numeric(as.Date(c("2022-6-18","2022-8-24","2022-9-7","2022-10-21"),by="days"))
 if (Output$`Date ID`[i] %in% date.four){
-  source("9.Manure temperature on four dates.R",echo = F)
+  source("9. Manure temperature on four dates.R",echo = F)
 }
 
-#daily changing depth of manure for next day, L32<-L37
-if (Output$`Date ID`[i] %in% removal.duration[[1]]|
-    Output$`Date ID`[i] %in% removal.duration[[5]]|
-    Output$`Date ID`[i] %in% removal.duration[[9]]) {
-    M.depth<-M.depth-removal.depth.d
-    Zmmax<-M.depth
-} else if(Output$`Date ID`[i] %in% removal.duration[[2]]|
-          Output$`Date ID`[i] %in% removal.duration[[6]]|
-          Output$`Date ID`[i] %in% removal.duration[[10]]) {
-    M.depth<-M.depth-removal.depth.d
-    Zmmax<-M.depth
-} else if(Output$`Date ID`[i] %in% removal.duration[[3]]|
-           Output$`Date ID`[i] %in% removal.duration[[7]]|
-           Output$`Date ID`[i] %in% removal.duration[[11]]) {
-  M.depth<-M.depth-removal.depth.d
-  Zmmax<-M.depth
-} else if(Output$`Date ID`[i] %in% removal.duration[[4]]|
-           Output$`Date ID`[i] %in% removal.duration[[8]]|
-           Output$`Date ID`[i] %in% removal.duration[[12]]) {
-  M.depth<-M.depth-removal.depth.d
-  Zmmax<-M.depth
-} else {
-M.depth<-M.depth+depthchange.d
-Zmmax<-M.depth    
-print(M.depth)
-}
+source("5.2. Manure volume removal.R",echo = F)
 
 #Save the new temperatures
 #In the sheet, it save a final temp to R60:R89, this was not used, so I skipped it.
@@ -203,3 +144,4 @@ write.csv(Output,paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/
 write.csv(Output,paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/original/"
                        ,Location,Sys.Date(),".csv",sep=""),row.names = FALSE)
 }
+

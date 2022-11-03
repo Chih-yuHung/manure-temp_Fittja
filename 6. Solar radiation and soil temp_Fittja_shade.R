@@ -24,7 +24,6 @@ shadow<-pi*ri^2-(4*pi*ri^2*deg.theta/(2*pi)
 light.d<-1-(shadow/Au)                             # the percentage that sunlight on the surface, between 0-1
 light.d[is.nan(light.d)]<-1
 ##End for shadow calculation
-
 m<-ifelse(sin.alpha>0,Pa/(101325*sin.alpha),0)       # Optical air mass number, #F103-KG103
 Sb<-ifelse(sin.alpha>0, Eb*(tau^m)*sin.alpha,0)      # solar bean radiation (W/m2),F104-KG104
 Sd<-ifelse(sin.alpha>0,0.3*(1-tau^m)*Eb*sin.alpha,0) # Diffusive radiation (w/m2),F105-KG105
@@ -128,9 +127,9 @@ Ts[2:288]<-M.Temp[2:288] # don't know the purpose
 
 #Assumed the M.Temp is well mixed after every 5 day
 #because of manure input
-if (i %% 5 == 0) {
-  M.Temp[,288]<-mean(M.Temp[,288])
-}
+ if (i %% 5 == 0) {
+   M.Temp[,288]<-mean(M.Temp[,288])
+ }
 
 #Temp and depth adjustment, F200:Q238
 #Current enthalpy, J209:J238

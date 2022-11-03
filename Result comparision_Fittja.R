@@ -2,7 +2,6 @@ library(ggplot2)
 library(tidyverse)
 library(dplyr)
 library(hydroGOF) #NSE 
-
 #Sweden project-Fittja
 #To compare my simulation result to the measured data
 
@@ -15,29 +14,15 @@ SR<-Envir.daily$SR[1:365]
 obs.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/temp.Fittja.daily.csv",header=T) 
 obs.Fittja<-obs.Fittja[rep(c(1:365),4),]
 #simulated data before calibration
-sim.Fittja.og<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/original/Fittja2022-07-05.csv",header=T) 
+sim.Fittja.og<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/original/Fittja2022-10-03.csv",header=T) 
 #simulated data after calibration and modification
-sim.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/Fittja2022-07-05.csv",header=T)
+sim.Fittja<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/with shade/Fittja2022-10-03.csv",header=T)
 
 #Draw the last year only
 temp<-temp[1096:1460]
 obs.Fittja<-obs.Fittja[c(1096:1460),]
-sim.Fittja.og<-sim.Fittja.og[c(731:1095),]
+sim.Fittja.og<-sim.Fittja.og[c(1096:1460),]
 sim.Fittja<-sim.Fittja[c(1096:1460),]
-
-
-#par(mfrow=c(3,1),mar=c(2,4,2,1))
-#For air temperature and soil temperature
-# plot(temp,type="l",xaxt='n',col="gray",ylim=c(-15,30)) #Air temperature
-# lines(result.m$Stemp50,col="red") #measured soil temperature at 50 cm
-# lines(result.m$temp0.5,col="red",lwd=2,lty=2) # measured manure at 0.5 m
-# lines(result.adjust$temp0.5.sim,col="blue",lwd=2,lty=2) # simulate manure at 0.5 m
-# legend(10,29,c("Air temp","Soil temp at 0.5m","Tm-measured at 0.5m","Tm-model at 0.5m")
-#        ,col=c("grey","red","red","blue")
-#        ,lty=c(1,1,2,2),lwd=2,ncol=4,bty="n")
-# Axis(side=1, at=c(16,130,209,324,381,495,574,689,746,860,939,1054,1111,1225,1304,1419)
-#      ,labels=rep(c("7/1","10/12","1/1","4/25"),4))
-
 
 #For measured manure temperature
 par(mar=c(3,4,2,4))
@@ -80,26 +65,10 @@ Axis(side=1, at=c(16,130,209,324,381,495,574,689,746,860,939,1054,1111,1225,1304
 
 
 
-#For plots measured manure temperature (0.5)
-plot(temp,type="l",xaxt='n',col="gray",ylim=c(-15,30),lwd=2,xlab="Date") #Air temperature
-lines(result.m$temp0.5,col="orange",lwd=2) # measured manure at 0.5 m
-lines(result.adjust$temp0.5.sim,col="blue",lwd=2,lty=2) # simulate manure at 0.5 m
-legend(0,29,c("Air temp","Tm-measured at 0.5m ","Tm-model at 0.5m"),col=c("grey","orange","blue")
-       ,lty=1,lwd=2,ncol=4,bty="n")
-Axis(side=1, at=c(16,130,209,324,381,495,574,689,746,860,939,1054,1111,1225,1304,1419)
-     ,labels=rep(c("7/1","10/12","1/1","4/25"),4))
-
-plot(result.adjust1.0$Temperature.C,type="l",xaxt='n',col="gray",ylim=c(0,35),xlab="Date") #manure avg. obs temperature
-lines(result.adjust1.3$Temperature.C,type="l",col="blue") #without shade calibration
-lines(result.adjust0.7$Temperature.C,col="black",lwd=2)
-
-
 
 
 #obtain a stat table
-source("C:/AAFC/Project 3_Sweden/2. Method/R/stat output.R")
-
-
+source("stat output.R")
 
 ########################################
 ##A plot to compare Ta, Tm-avg. Tm-0.5m, Tm-1.5, and Tm-2.5
