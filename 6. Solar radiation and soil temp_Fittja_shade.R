@@ -13,7 +13,7 @@ sin.alpha<-pmax((cos(deg2rad(L))*cos(deg2rad(declination.s))
           *sin(deg2rad(declination.s))),0)                   # sunlight degree, F102:KG102
 
 #This's a part to calculate shadow area due to the tank wall, it's not in Rennie, 2017
-if (shadow.effect == 1) {
+if (submodels == 1) {
 wall.h<-Htank-M.depth                              # the wall height above manure surface, m
 cot.alpha<-(1-sin.alpha^2)^(1/2)/sin.alpha
 cos.theta<-(wall.h*cot.alpha/2)/ri                 # the angle in the circle-circle intersection, a numeric
