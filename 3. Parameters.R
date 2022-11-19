@@ -8,6 +8,7 @@ Tank.v<-Au*Htank      #Total tank volume, m3, M26
 #manure storage is a estimate number, maximum depth was 3.1 m in Aug
 M.storage<-2800       #yearly manure storage volume, m3, M29 =P32,because total manure
                       # removals were 2800-3000 m3 in 2018-2021
+M.daily<-M.storage/Au/365
 #It's a swine farm need to adjust the manure input rates. 
 Freeboard<-0.3        #freeboard, m, P34
 sludge<-0.5           #m, P36
@@ -23,7 +24,7 @@ Total.solid<-0.08                #It barely influences the manure temperature
 #Input manure temperature
 annualT<-mean(c(Envir.daily$AirTmax1,Envir.daily$AirTmin1)) #for ini. soil temp, assume equal to mean annual air temp, B43
 Avg.Barn.temp<-annualT        #degree C, avg. annual barn temp, L46, I assumed annual air temperature here 7.12
-Barn.temp.amp<-0              #degree C, amplitude of annual temp, L47
+Barn.temp.amp<-5              #degree C, amplitude of annual temp, L47
 Temp.cost<-4.32               #Temp phase constant, L48, barely influence the result
                               #15.2 and 3 for the last result
 
@@ -31,7 +32,7 @@ Temp.cost<-4.32               #Temp phase constant, L48, barely influence the re
 L<-59.525002                  #Latitude
 alpha.s<-0.8                  #solar absorptivity, B18, 0.8 in Tim's model
 Eb<-1395                      #extraterrestrial solar flux density, W m-2
-tau<-0.75                     #Atmospheric transimttance, 0.75 clear, 0.4 overcast
+tau<-0.75                     #Atmospheric transmittance, 0.75 clear, 0.4 overcast
 A<-13                         #altitude, m
 epsilon<-0.95                 #emissivity,B26
 

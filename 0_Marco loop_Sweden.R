@@ -18,9 +18,9 @@ removal.duration<-list()
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 
 #Shade effect or not
-submodels<-0  #1 with submodel effects, 0 is without
+submodels<-1  #1 with submodel effects, 0 is without
 #It includes (1) shadow effect, (2) latent heat and snow accumulation, (3) agitation
-
+mixing.day<-5
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
 Envir.daily<-read.csv("input/daily env input_Fittja_May1.csv",header=T)
 #To produce an extra year for balance soil temperature
@@ -67,6 +67,8 @@ source("5. Manure volume_Fittja.R",echo=F)
 #print(paste("after volume",Sys.time()-starttime))
 #To calculate solar radiation, soil temp, and manure temp at 300 sec steps.
 source("6. Solar radiation and soil temp_Fittja_shade.R",echo=F)
+#To calculate enthalpy.
+source("6.1 Enthalpy calculation.R",echo=F)
 #print(paste("after solar",Sys.time()-starttime))
 #To calculate final hourly temp
 source("7. hourly temp_Fittja.R",echo=F)
