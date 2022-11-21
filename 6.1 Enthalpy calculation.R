@@ -13,7 +13,11 @@ if (submodels == 1) {
   if (i %% mixing.day == 0) {
   #incoming Manure from the sump pit  
   depthchange.d<-M.daily*mixing.day+precip.d-Evap.depth.d
+  if(M.depth <= 1.5) {
   M.Temp[,288]<-mean(M.Temp[,288])
+  } else {
+  M.Temp[1:10,288]<-mean(M.Temp[1:10,288])  
+  }
   }else{
   depthchange.d<-precip.d-Evap.depth.d      #without manure input
   }     
