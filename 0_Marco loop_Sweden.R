@@ -18,7 +18,7 @@ removal.duration<-list()
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 
 #Shade effect or not
-submodels<-1  #1 with submodel effects, 0 is without
+submodels<-0  #1 with submodel effects, 0 is without
 #It includes (1) shadow effect, (2) latent heat and snow accumulation, (3) agitation
 mixing.day<-5
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
@@ -90,9 +90,9 @@ print(paste("Sequence",i,"And Manure temp",Avg.M.temp.d))
 #the four dates are May 1, Aug 1, Nov 1, Feb 1. 
 four.date<-1 # for temp on four dates
 date.four<-as.numeric(as.Date(c("2022-6-18","2022-8-24","2022-9-7","2022-10-21"),by="days"))
-if (Output$`Date ID`[i] %in% date.four){
-  source("9. Manure temperature on four dates.R",echo = F)
-}
+#if (Output$`Date ID`[i] %in% date.four){
+#  source("9. Manure temperature on four dates.R",echo = F)
+#}
 
 source("5.2. Manure volume removal.R",echo = F)
 
