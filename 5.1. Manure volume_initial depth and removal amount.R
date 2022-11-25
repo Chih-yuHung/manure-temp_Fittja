@@ -1,6 +1,6 @@
 #Manure depth adjustment
 #Reset M.depth and ini.M.temp after soil temperature stabilization
-if (sum(i==365|i==730|i==1095|i==1460)==1){
+if (sum(i==366|i==731|i==1096|i==1461)==1){
   M.depth<-0.67
   Zmmax<-M.depth
 }

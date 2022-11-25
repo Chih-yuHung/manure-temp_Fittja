@@ -25,21 +25,21 @@ Total.solid<-0.08                #It barely influences the manure temperature
 annualT<-mean(c(Envir.daily$AirTmax1,Envir.daily$AirTmin1)) #for ini. soil temp, assume equal to mean annual air temp, B43
 Avg.Barn.temp<-annualT        #degree C, avg. annual barn temp, L46, I assumed annual air temperature here 7.12
 Barn.temp.amp<-5              #degree C, amplitude of annual temp, L47
-Temp.cost<-4.32               #Temp phase constant, L48, barely influence the result
+Temp.cost<-4.1              #Temp phase constant, L48, barely influence the result
                               #15.2 and 3 for the last result
 
 #Solar data
 L<-59.525002                  #Latitude
-alpha.s<-0.8                  #solar absorptivity, B18, 0.8 in Tim's model
+alpha.s<-0.90                 #solar absorptivity, B18, 0.8 in Tim's model
 Eb<-1395                      #extraterrestrial solar flux density, W m-2
 tau<-0.75                     #Atmospheric transmittance, 0.75 clear, 0.4 overcast
 A<-13                         #altitude, m
-epsilon<-0.95                 #emissivity,B26
+epsilon<-0.915                 #emissivity,B26
 
 #Soil temperature properties 
 den.s<-1800                 #Soil density, kg/m3, B41,Saturated Clay = 2000,
                             #Dry clay = 1600,Saturated sand = 2000
-ks<-0.7                     #soil thermal conductivity,W/mk, B42, 
+ks<-1.7                     #soil thermal conductivity,W/mk, B42, 
                             #Saturated Clay = 1.58, Dry clay = 0.25, 
                             #Saturated sand = 2.2,Dry sand = 0.3,Oke, 1988
 annualT.K<-annualT+273.15                                   #soil temp at K, B44

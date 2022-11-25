@@ -18,7 +18,7 @@ removal.duration<-list()
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 
 #Shade effect or not
-submodels<-0  #1 with submodel effects, 0 is without
+submodels<-1  #1 with submodel effects, 0 is without
 #It includes (1) shadow effect, (2) latent heat and snow accumulation, (3) agitation
 mixing.day<-5
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
@@ -54,8 +54,10 @@ wind.v<-Envir.daily$wind[i]   #daily wind speed at 2m, m/h
 wind.f<-(2.36+1.67*wind.v)*Au^(-0.05)
 cc<-min(Envir.daily$cloud[i],1) #cloud clover
 precip.d<-Envir.daily$precip[i]/1000
-if(submodels == 1) {
+if (submodels == 1){
 source("3.1. Alpha.s_adjustment.R",echo=F)
+} else{
+  snow <-0
 }
 RH6<-Envir.daily$RH.6[i]
 RH15<-Envir.daily$RH.15[i]
@@ -83,8 +85,8 @@ if(is.element(i,tail(1:d.length,n=365))){
 }
 
 #Write the results, only write after first year
-Output[i,6:11]<-c(Avg.M.temp.d,M.depth*100,M.volume.current,
-                  Evap.depth.d*100,precip.d*100,sum(q.net.rad))
+Output[i,6:12]<-c(Avg.M.temp.d,M.depth*100,M.volume.current,
+                  Evap.depth.d*100,precip.d*100,sum(q.net.rad),snow)
 print(paste("Sequence",i,"And Manure temp",Avg.M.temp.d))
 #Write the results for the four dates at the last year
 #the four dates are May 1, Aug 1, Nov 1, Feb 1. 

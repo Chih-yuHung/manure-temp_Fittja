@@ -7,7 +7,8 @@ Enthalpy.c<-ifelse(M.Temp[,288]<272.15,M.Temp[,288]*rho.m*M.volume*C.pm/10^6
                            ,(272.15*rho.m*M.volume*C.pm+(M.Temp[,288]-272.15)*rho.m*M.volume*C.pm.fusion)/10^6))
 
 if (submodels == 1) {
- In.M.temp<-(AirTmax1+AirTmin1)/2 #incoming manure temperature
+ #In.M.temp<-annualT #not better than the original result
+ In.M.temp<-Avg.Barn.temp+Barn.temp.amp*sin(2*pi/365*T.day+Temp.cost) #Incoming manure temp, L49,L39
  #Assumed the M.Temp is well mixed after every 5 day
  #because of manure input
   if (i %% mixing.day == 0) {
@@ -28,8 +29,7 @@ if (submodels == 1) {
   Enthalpy.c.new<-Enthalpy.c+(M.volume.new-M.volume)*rho.m*((In.M.temp*C.pm)+272.15*C.pm+C.pm.fusion)/1000000
   Enthalpy.V<-Enthalpy.c.new/M.volume.new  #Enthalpy/V, O209:O238
 } else {
-#New enthalpy
-#incoming Manure temp
+#In.M.temp<-annualT #incoming manure temperature
 In.M.temp<-Avg.Barn.temp+Barn.temp.amp*sin(2*pi/365*T.day+Temp.cost) #Incoming manure temp, L49,L39
 depthchange.d<-M.daily+precip.d-Evap.depth.d #L34
 depth.factor<-depthchange.d/M.depth                   #N204

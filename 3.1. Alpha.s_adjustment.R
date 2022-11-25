@@ -9,7 +9,8 @@ if (Tmean <=0){
   max(0.55,albedo) # the minimum is 0.55 follow we did in the DNDC
   alpha.s  <- 1-albedo
 }else {
-  alpha.s<-0.8
+  snow<-0
+  alpha.s<-0.9
   }
  
 #Obtain a model for albedo based on Perovich et al. 2017,
