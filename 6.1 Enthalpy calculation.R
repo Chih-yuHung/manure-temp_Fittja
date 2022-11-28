@@ -8,8 +8,9 @@ Enthalpy.c<-ifelse(M.Temp[,288]<272.15,M.Temp[,288]*rho.m*M.volume*C.pm/10^6
 
 if (submodels == 1) {
  #In.M.temp<-annualT #not better than the original result
- In.M.temp<-Avg.Barn.temp+Barn.temp.amp*sin(2*pi/365*T.day+Temp.cost) #Incoming manure temp, L49,L39
- #Assumed the M.Temp is well mixed after every 5 day
+ #In.M.temp<-Avg.Barn.temp+Barn.temp.amp*sin(2*pi/365*T.day+Temp.cost) #Incoming manure temp, L49,L39
+ In.M.temp<-ifelse(Tmean<=0,0,Tmean)
+  #Assumed the M.Temp is well mixed after every 5 day
  #because of manure input
   if (i %% mixing.day == 0) {
   #incoming Manure from the sump pit  

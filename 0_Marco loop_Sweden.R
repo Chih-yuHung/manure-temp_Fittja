@@ -18,7 +18,7 @@ removal.duration<-list()
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 
 #Shade effect or not
-submodels<-1  #1 with submodel effects, 0 is without
+submodels<-0  #1 with submodel effects, 0 is without
 #It includes (1) shadow effect, (2) latent heat and snow accumulation, (3) agitation
 mixing.day<-5
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
@@ -74,6 +74,8 @@ source("6.1 Enthalpy calculation.R",echo=F)
 #print(paste("after solar",Sys.time()-starttime))
 #To calculate final hourly temp
 source("7. hourly temp_Fittja.R",echo=F)
+#retrieve manure temperature at 0.5m, 1.5m and 2.5 m
+source("7.1 temp at three depths_Fittja.R",echo = F)
 
 #To obtain temp and depth at the end of the day
 # I need manure temperature in different depth every day for the last year
@@ -84,14 +86,15 @@ if(is.element(i,tail(1:d.length,n=365))){
     manure.depth<-c(manure.depth,aa)
 }
 
-#Write the results, only write after first year
-Output[i,6:12]<-c(Avg.M.temp.d,M.depth*100,M.volume.current,
-                  Evap.depth.d*100,precip.d*100,sum(q.net.rad),snow)
+#Write the results
+Output[i,6:15]<-c(Avg.M.temp.d,M.depth*100,M.volume.current,
+                  Evap.depth.d*100,precip.d*100,sum(q.net.rad),snow,
+                  M.temp.depth)
 print(paste("Sequence",i,"And Manure temp",Avg.M.temp.d))
 #Write the results for the four dates at the last year
 #the four dates are May 1, Aug 1, Nov 1, Feb 1. 
-four.date<-1 # for temp on four dates
-date.four<-as.numeric(as.Date(c("2022-6-18","2022-8-24","2022-9-7","2022-10-21"),by="days"))
+#four.date<-1 # for temp on four dates
+#date.four<-as.numeric(as.Date(c("2022-6-18","2022-8-24","2022-9-7","2022-10-21"),by="days"))
 #if (Output$`Date ID`[i] %in% date.four){
 #  source("9. Manure temperature on four dates.R",echo = F)
 #}

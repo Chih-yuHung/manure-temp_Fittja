@@ -47,6 +47,7 @@ arrows(347,-5,347,0)
 Axis(side=4, at=c(0,5,10,15,20,25,30)
      ,labels=c("0","5","10","15","20","25","30"))
 mtext("Solar irradiation (MJ /m2)",side=4,line = 2.5)
+text(20,28,"Örsundsbro (OR) site")
 dev.off()
 
 #For manure depth
@@ -56,7 +57,7 @@ plot(sim.Fittja$Depth.cm,type="l"
      ,ylim=c(0,350),xaxt='n'
      ,col="black",xlab="Date"
      ,ylab="Depth (cm)")
-#retrievedme? from measurement data
+#retrieved from measurement data
 points(c(1,49,116,130,174,289,303),
        c(67,242,310,190,73,280,230))
 Axis(side=1, at=c(1,93,185,277)
