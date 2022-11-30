@@ -18,7 +18,7 @@ removal.duration<-list()
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
 
 #Shade effect or not
-submodels<-0  #1 with submodel effects, 0 is without
+submodels<-1  #1 with submodel effects, 0 is without
 #It includes (1) shadow effect, (2) latent heat and snow accumulation, (3) agitation
 mixing.day<-5
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update

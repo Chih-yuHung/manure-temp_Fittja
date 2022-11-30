@@ -10,7 +10,7 @@ if (submodels == 1) {
  #In.M.temp<-annualT #not better than the original result
  #In.M.temp<-Avg.Barn.temp+Barn.temp.amp*sin(2*pi/365*T.day+Temp.cost) #Incoming manure temp, L49,L39
  In.M.temp<-ifelse(Tmean<=0,0,Tmean)
-  #Assumed the M.Temp is well mixed after every 5 day
+ #Assumed the M.Temp is well mixed after every 5 day
  #because of manure input
   if (i %% mixing.day == 0) {
   #incoming Manure from the sump pit  
@@ -20,7 +20,7 @@ if (submodels == 1) {
   } else {
   M.Temp[1:10,288]<-mean(M.Temp[1:10,288])  
   }
-  }else{
+  } else{
   depthchange.d<-precip.d-Evap.depth.d      #without manure input
   }     
   #Enthalpy after manure added, N209:N238
@@ -50,8 +50,8 @@ Final.M.Temp<-ifelse(Enthalpy.V<E.272,272.15*Enthalpy.V/E.272,
                      ifelse(Enthalpy.V>=E.273,273.15+(Enthalpy.V-E.273)*10^6/(C.pm*rho.m)
                             ,272.15+(Enthalpy.V-E.272)/fusion))
 
-if (mean(Final.M.Temp)>=(50+273.15)) {
-  cat("Manure temperature too high to be true")
+if (mean(Final.M.Temp)>=(50+273.15)| mean(Final.M.Temp) <= (-10+273.15)) {
+  cat("Manure temperature too high/low to be true")
   break
 }
 
