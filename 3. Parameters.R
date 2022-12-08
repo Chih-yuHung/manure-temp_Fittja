@@ -14,22 +14,22 @@ Freeboard<-0.3        #freeboard, m, P34
 sludge<-0.5           #m, P36
 
 #Manure depth
-M.depth<-0.67                  #This is the initial manure depth, m, L32
-removal.depth<-c(1.87,0.18,0.15,0.93)  #the depth after removal, m, S52
-
+M.depth<-0.93                  #This is the initial manure depth, m, L32
+#removal.depth<-c(1.87,0.18,0.15,0.93)  #the depth after removal, m, S52
+removal.depth<-c(2.13,0.44,0.15,0.93) 
 
 
 #Manure properties, R26:29
 Total.solid<-0.08                #It barely influences the manure temperature 
 #Input manure temperature
 annualT<-mean(c(Envir.daily$AirTmax1,Envir.daily$AirTmin1)) #for ini. soil temp, assume equal to mean annual air temp, B43
-Avg.Barn.temp<-annualT        #degree C, avg. annual barn temp, L46, I assumed annual air temperature here 7.12
-Barn.temp.amp<-10             #degree C, amplitude of annual temp, L47
+Avg.Barn.temp<-annualT+2      #degree C, avg. annual barn temp, L46, I assumed annual air temperature here 7.12
+Barn.temp.amp<-annualT        #degree C, amplitude of annual temp, L47
 Temp.cost<-4.1                #Temp phase constant, L48, barely influence the result
                               #15.2 and 3 for the last result
 
 #Solar data
-L<-59.525002                  #Latitude
+L<-59.6947                    #Latitude
 alpha.s<-0.85                 #solar absorptivity, B18, 0.8 in Tim's model
 Eb<-1395                      #extraterrestrial solar flux density, W m-2
 tau<-0.75                     #Atmospheric transmittance, 0.75 clear, 0.4 overcast

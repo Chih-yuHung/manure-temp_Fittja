@@ -4,21 +4,21 @@ Location<-"Fittja"
 start.date<-"2020-5-1"  
 end.date<-"2023-4-30" 
 #insert multiple removal date in multiple years, can be different dates
-removal.start<-as.numeric(as.Date(c("2020-7-8","2020-10-2","2020-10-30","2021-4-12"
-                                    ,"2020-7-8","2020-10-2","2020-10-30","2021-4-12"
-                                    ,"2021-7-8","2021-10-2","2021-10-30","2022-4-12"
-                                    ,"2022-7-8","2022-10-2","2022-10-30","2023-4-12"),by="days"))
-removal.end<-as.numeric(as.Date(c("2020-7-9","2020-10-4","2020-10-31","2021-4-13"
-                                  ,"2020-7-9","2020-10-4","2020-10-31","2021-4-13"
-                                  ,"2021-7-9","2021-10-4","2021-10-31","2022-4-13"
-                                  ,"2022-7-9","2022-10-4","2022-10-31","2023-4-13"),by="days"))
+removal.start<-as.numeric(as.Date(c("2020-7-8","2020-9-2","2020-10-30","2021-4-12"
+                                    ,"2020-7-8","2020-9-2","2020-10-30","2021-4-12"
+                                    ,"2021-7-8","2021-9-2","2021-10-30","2022-4-12"
+                                    ,"2022-7-8","2022-9-2","2022-10-30","2023-4-12"),by="days"))
+removal.end<-as.numeric(as.Date(c("2020-7-9","2020-9-4","2020-10-31","2021-4-13"
+                                  ,"2020-7-9","2020-9-4","2020-10-31","2021-4-13"
+                                  ,"2021-7-9","2021-9-4","2021-10-31","2022-4-13"
+                                  ,"2022-7-9","2022-9-4","2022-10-31","2023-4-13"),by="days"))
 removal.day<-(removal.end-removal.start)[1:4]+1
 removal.duration<-list()
     for (i in 5:16){ 
         removal.duration[[i-4]]<-c(removal.start[i]:removal.end[i])}
-
+parameters<-read.csv("input/parameters.csv",header = T)
 #Shade effect or not
-submodels<-1  #1 with submodel effects, 0 is without
+submodels<-0  #1 with submodel effects, 0 is without
 #It includes (1) shadow effect, (2) latent heat and snow accumulation, (3) agitation
 mixing.day<-5
 #start from here. The removal dates doesn't match. I also did it wrong on the M.volume update
@@ -28,8 +28,8 @@ Envir.daily<-Envir.daily[c(1:365,1:1095),]
 #to know how many days we have for the loop
 d.length<-nrow(Envir.daily)
 #initial manure temp
-ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T)
-ini.M.Temp<-ini.M.Temp[,"Initial.Temp"] #change to vector
+ini.M.Temp<-read.csv("input/Initial M temp.csv",header=T)[,1]#change to vector
+
 
 #Read parameters
 source("3. Parameters.R",echo=F)           #Parameters we can change
