@@ -119,4 +119,4 @@ for (i in 1:16) {
 library(xlsx)
 write.xlsx(stat.avg,
     file=paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/stat/"
-               ,Sys.Date(),"_OR.xlsx",sep=""), sheetName="OR site", row.names=F)
+               ,Sys.Date(),"_",test,"_OR.xlsx",sep=""), sheetName="OR site", row.names=F)

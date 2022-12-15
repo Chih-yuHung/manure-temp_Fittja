@@ -6,62 +6,96 @@ library(hydroGOF) #NSE
 #To compare my simulation result to the measured data
 
 #output to an excel file
-Envir.daily<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/2. Method/input/daily env input_Fittja_May1.csv",header=T)
-temp<-((Envir.daily$AirTmax1+Envir.daily$AirTmin1)/2)[731:1095] #Air Temp.avg
+Envir.daily <- read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/2. Method/input/daily env input_Fittja_May1.csv",header = T)
+temp <- ((Envir.daily$AirTmax1 + Envir.daily$AirTmin1)/2)[731:1095] #Air Temp.avg
 
 #observed data
-result<-"C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/"
-obs.Fittja<-read.csv(paste(result,"temp.Fittja.daily.csv",sep=""),header=T) 
+result <- "C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/"
+obs.Fittja <- read.csv(paste(result,"temp.Fittja.daily.csv",sep = ""),header = T) 
 
 #simulated data before calibration
-sim.Fittja.og<-read.csv(paste(result,"Fittja/original/",Location,Sys.Date(),".csv",sep=""),header=T) 
-SR.og<-sim.Fittja.og$total.radiation[1096:1460]/12/277.77778
+sim.Fittja.og <- read.csv(paste(result,"Fittja/original/",
+                                Location,Sys.Date(),"_",test,".csv",sep = ""),header = T) 
+SR.og <- sim.Fittja.og$total.radiation/12/277.77778
+SR.og.cum <- cumsum(SR.og)
 #simulated data after calibration and modification
-sim.Fittja<-read.csv(paste(result,"Fittja/with shade/",Location,Sys.Date(),".csv",sep=""),header=T)
-SR<-sim.Fittja$total.radiation[1096:1460]/12/277.77778
-#Draw the last year only
-sim.Fittja.og<-sim.Fittja.og[c(1096:1460),]
-sim.Fittja<-sim.Fittja[c(1096:1460),]
+sim.Fittja <- read.csv(paste(result,"Fittja/with shade/",
+                             Location,Sys.Date(),"_",test,".csv",sep = ""),header = T)
+SR <- sim.Fittja$total.radiation/12/277.77778
+SR.cum <- cumsum(SR)
+sim.Fittja$snow.depth[sim.Fittja$snow.depth == 0] <- NA 
+#obtain removal days
+removal.a <- removal.start[1:4] - as.numeric(as.Date(start.date)) + 1
 
 #For measured manure temperature
-png(file=paste(result,"Fittja/figures/",Location,Sys.Date(),".png",sep="")
-    ,width=800, height =600)
-par(mar=c(3,4,2,4))
-plot(temp,type="l",xaxt='n',col="green",ylim=c(-15,30)
-     ,xlab="Date",ylab="Temperature",las=1) #Air temperature
-lines(obs.Fittja$temp.avg,type="l") #manure avg. obs temperature
-lines(sim.Fittja.og$Temperature.C,type="l",col="blue",lwd=2) #without shade calibration
-lines(sim.Fittja$Temperature.C,col="red",lwd=2)
-legend(10,-10,c("Tair","Tm meausrement","Tm model","Tm revised model"
-                ,"solar irradiation","solar irradiation revised model")
-       ,col=c("green","black","blue","red","lightblue","red")
-       ,lty=c(1,1,1,1,2),lwd=2,ncol=2,bty="n")
-lines(SR.og,col="lightblue",lty="dashed")
-lines(SR,col="red",lty="dashed")
-Axis(side=1, at=c(1,93,185,277),las=1
-     ,labels=c("May 1, 2020","Aug. 1, 2020","Nov. 1, 2020","Feb. 1, 2021"))
-arrows(69,-5,69,0) #removal dates
-arrows(155,-5,155,0)
-arrows(183,-5,183,0)
-arrows(347,-5,347,0)
-Axis(side=4, at=c(0,5,10,15,20,25,30)
-     ,labels=c("0","5","10","15","20","25","30"))
-mtext("Solar irradiation (MJ /m2)",side=4,line = 2.5)
-text(20,28,"Örsundsbro (OR) site")
-dev.off()
-
-#For manure depth
-png(file=paste(result,"Fittja/figures/",Location,Sys.Date(),"_depth.png",sep="")
-    ,width=800, height =600)
-plot(sim.Fittja$Depth.cm,type="l"
-     ,ylim=c(0,350),xaxt='n'
-     ,col="black",xlab="Date"
-     ,ylab="Depth (cm)")
+png(file = paste(result,"Fittja/figures/",Location,Sys.Date(),"_",test,".png",sep = "")
+    ,width = 800, height = 1200)
+par(mfrow = c(3,1), mar = c(4,8,1,7),oma = c(3,0,0,0))
+#A. Temperature
+plot(temp,type = "l",xaxt = 'n',col = "grey",ylim = c(-15,30)
+     ,xlab = "",ylab = "",las = 1,cex.axis = 2) #Air temperature
+lines(obs.Fittja$temp.avg,type = "l",lwd = 2,lty = 3) #manure avg. obs temperature
+lines(sim.Fittja.og$Temperature.C,type = "l",col = "blue",lwd = 2) #without shade calibration
+lines(sim.Fittja$Temperature.C,col = "red",lwd = 2)
+legend(10,-7,c("Tair","Tm meausrement","Tm model","Tm revised model"),
+       col = c("grey","black","blue","red"),
+       lty = c(1,3,1,1),lwd = 2,ncol = 2,
+       bty = "n",cex = 2.5)
+axis(side = 1, at = c(1,93,185,277,365),las = 1,
+     labels = rep("",5),lwd.ticks = 2, tck = -0.03)
+for (i in 1:4) {#removal dates
+arrows(removal.a[i],-5,removal.a[i],0) 
+}
+mtext(expression(paste("Temperature (",degree,"C)",sep = "")),side = 2,line = 3, cex = 2)
+text(5,28,"Örsundsbro (OR) site", cex = 2.5,pos = 4)
+text(10,-7,"5000 m3 annual production",
+     pos = 4, cex = 2.5)
+#B. Solar radiation, precipitation
+plot(SR.og.cum,type = "l",col = "blue",lty = "dashed",xaxt = "n",
+     yaxt = "n",xlab = "" , ylab = "", lwd = 2,
+     ylim = c(0,3500),yaxs = "i")
+lines(SR.cum,col = "red",lty = "dashed", lwd = 2)
+axis(side = 1, at = c(1,93,185,277,365),las = 1,
+     labels = rep("",5),lwd.ticks = 2, tck = -0.03)
+axis(side = 2, at = c(0,500,1000,1500,2000,2500,3000,3500)
+     ,labels = c("0","500","1000","1500","2000",
+                 "2500","3000","3500"),
+     las = 2, cex.axis = 2)
+axis(side = 4, at = c(0,500,1000,1500,2000)
+     ,labels = c("0","1","2","3","4"),
+     las = 2, cex.axis = 2)
+mtext(expression(paste("Solar irradiation (MJ/ ",m^2,")",sep = "")),
+                 side = 2,line = 5, cex = 2)
+mtext("Precipitation/",
+      side = 4,line = 3.5, cex = 2)
+mtext("Snow water equivalent (cm)",
+      side = 4,line = 5.5, cex = 2)
+legend(5,3500,
+       c("solar irradiation","solar irradiation revised model",
+         "precipitation","snow water equivalent"),
+       col = c("blue","red","black","red"),
+       lty = c(2,2,1,1),lwd = 2,bty = "n",
+       cex = 2.5)
+lines(sim.Fittja$Precipitation.cm*500, lwd = 2 )
+lines(sim.Fittja$snow.depth*50,lwd = 2,col = "red")
+#C. Manure depth
+plot(sim.Fittja$Depth.cm,type = "l",
+     ylim = c(0,350),xaxt = 'n',
+     col = "black",xlab = "",
+     ylab = "", las = 2,
+     cex = 3, cex.lab = 2, cex.axis = 2 )
 #retrieved from measurement data
 points(c(1,49,116,130,174,301,307),
        c(67,242,310,190,73,280,230))
-Axis(side=1, at=c(1,93,185,277)
-     ,labels=c("May 1, 2020","Aug. 1, 2020","Nov. 1, 2020","Feb. 1, 2021"))
+for (i in 1:4) {#removal dates
+  arrows(removal.a[i],20,removal.a[i],50) 
+}
+axis(side = 1, at = c(1,93,185,277,365),
+     cex.axis = 2,lwd.ticks = 2,tck = -0.03,mgp = c(0,2,0),
+     labels = c("5/1, 2020","8/1, 2020","11/1, 2020","2/1, 2021","5/1, 2021"))
+mtext("Date",line = 1 , cex = 2.5,side = 1,
+      outer = T)
+mtext("Depth (cm)",side = 2,cex = 2,line = 5)
 dev.off()
 
 
