@@ -1,14 +1,50 @@
+parameters <- read.csv(paste("input/OR_",test,".csv",
+                             sep = ""),header = T)
 #This file has all adjustable parameters that may influence our results. 
+Location <- parameters[1,2]
+start.date <- as.character(as.Date(parameters[1,3],format = "%m/%d/%Y"))  
+end.date <- as.character(as.Date(parameters[1,4],format = "%m/%d/%Y")) 
+removal.start <- as.numeric(as.Date(parameters[,5],format = "%m/%d/%Y"))
+removal.end <- as.numeric(as.Date(parameters[,6],format = "%m/%d/%Y"))
+
+removal.day <- (removal.end - removal.start)[1:4] + 1
+removal.duration <- list()
+for (i in (length(removal.start)/4 + 1):length(removal.start)) { 
+  removal.duration[[i - 4]] <- c(removal.start[i]:removal.end[i])
+}
+
+#Environmental input
+Envir.daily <- read.csv("input/daily env input_Fittja_May1.csv",header = T)
+#To produce an extra year for balance soil temperature
+Envir.daily <- Envir.daily[c(1:365,1:1095),]
+d.length <- nrow(Envir.daily)
+#initial manure temp
+ini.M.Temp <- read.csv("input/Initial M temp.csv",header = T)[,1]#change to vector
+
+
+#It includes (1) shadow effect, (2) latent heat and snow accumulation, (3) agitation
+mixing.day <- parameters[1,7]
 
 #Tank properties
 Htank <- parameters[1,8]       #height of tank, m, B29
 ri <- parameters[1,9]          #Inner radius of tank, m, B32
 Au <- ri^2*pi                  #tank area, m2, F55
 Tank.v <- Au*Htank             #Total tank volume, m3, M26
+
 #manure storage is a estimate number, maximum depth was 3.1 m in Aug
+if (submodels == 0){
+M.storage <- parameters[1,10]
+M.daily <- rep(M.storage/365/Au,1460)
+} else {
 M.storage <- parameters[1,10]  #yearly manure storage volume, m3, M29 =P32,because total manure
                       # removals were 2800-3000 m3 in 2018-2021
-M.daily <- M.storage/Au/365
+washout <- rep(parameters[2,10] * 70  / 1000 / Au / 7,7) #convert to depth m, the number in parameter is 
+                                   # pig amount, 70 kg pig-1, 7 days for washout  
+#a vector to know the daily manure input
+#M.daily <- rep(c(rep(M.storage/3/120/Au,120),washout/Au,0),12)[1:1460]
+M.daily <- rep(c(rep(M.storage/365/Au,77),washout),20)[1:1460]
+}
+
 #It's a swine farm need to adjust the manure input rates. 
 Freeboard <- parameters[1,11]   #freeboard, m, P34
 sludge <- parameters[1,12]      #m, P36

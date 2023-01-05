@@ -4,6 +4,10 @@ library(imputeTS) # for NA interpolation in soil temp
 S.Temp <- matrix(nrow = 300,ncol = 288)              #Soil temp
 M.Temp <- matrix(ncol = 288,nrow = 30)               #manure temp calculation, F133:KG162
 
+#to store daily manure.temp in the 30 layers
+manure.temp <- c()
+manure.depth <- c()
+
 # Set Output Headers and Write parameters to Output
 Output <- data.frame(matrix(ncol = 15,nrow = d.length - 365))
 colnames(Output) <- c("Date ID","Year","Month","Day","DOY","Temperature.C","Depth.cm","Volume.m3"

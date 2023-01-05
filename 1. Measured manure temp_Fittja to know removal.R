@@ -1,4 +1,4 @@
-#This file is to find out possile manur input and manure removal time
+#This file is to find out possile manure input and manure removal time
 #The concept is to find arupt temperature chamge at 1.5 and 2.5 m
 #Deal with the manure temperature
 temp<-read.csv("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/raw/manure temp Fittja.csv",header=T)

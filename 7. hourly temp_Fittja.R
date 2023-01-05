@@ -1,4 +1,4 @@
-#For hourly Manure temp calculation and out final manure temperature
+#For hourly Manure temp calculation and output final manure temperature
 #It's before volume and enthalpy adjustment.
 #To my understanding, this is the temperature, we used to know the manure temp after a day
 #We assumed that new manure was added after this. 
