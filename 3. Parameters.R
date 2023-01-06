@@ -34,15 +34,17 @@ Tank.v <- Au*Htank             #Total tank volume, m3, M26
 #manure storage is a estimate number, maximum depth was 3.1 m in Aug
 if (submodels == 0){
 M.storage <- parameters[1,10]
-M.daily <- rep(M.storage/365/Au,1460)
+M.daily <- rep(M.storage/365/Au,d.length)
 } else {
 M.storage <- parameters[1,10]  #yearly manure storage volume, m3, M29 =P32,because total manure
                       # removals were 2800-3000 m3 in 2018-2021
-washout <- rep(parameters[2,10] * 70  / 1000 / Au / 7,7) #convert to depth m, the number in parameter is 
+washout <- rep(parameters[2,10] * parameters[3,10] / 1000 / Au / 2,2) #convert to depth m, the number in parameter is 
                                    # pig amount, 70 kg pig-1, 7 days for washout  
 #a vector to know the daily manure input
 #M.daily <- rep(c(rep(M.storage/3/120/Au,120),washout/Au,0),12)[1:1460]
-M.daily <- rep(c(rep(M.storage/365/Au,77),washout),20)[1:1460]
+M.daily <- rep(c(rep(M.storage/365/Au,118),washout,
+                 rep(M.storage*0.3/365/Au,118),washout,
+                 rep(M.storage*0.5/365/Au,118),washout),5)
 }
 
 #It's a swine farm need to adjust the manure input rates. 

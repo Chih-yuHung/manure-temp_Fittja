@@ -1,4 +1,4 @@
-library(ggplot2)
+library(devEMF)
 library(tidyverse)
 library(dplyr)
 library(hydroGOF) #NSE 
@@ -28,8 +28,11 @@ sim.Fittja$snow.depth[sim.Fittja$snow.depth == 0] <- NA
 removal.a <- removal.start[1:4] - as.numeric(as.Date(start.date)) + 1
 
 #For measured manure temperature
-png(file = paste(result,"Fittja/figures/",Location,"_",test,".png",sep = "")
-    ,width = 800, height = 1200)
+#png(file = paste(result,"Fittja/figures/",Location,"_",test,".png",sep = "")
+#    ,width = 1200, height = 1800)
+#emf(file = paste(result,"Fittja/figures/",Location,"_",test,".emf",sep = "")
+#    ,width = 12, height = 18,emfPlus = FALSE, family = "Calibri")
+plotoutput <- function() {
 par(mfrow = c(3,1), mar = c(4,8,1,7),oma = c(3,0,0,0))
 #A. Temperature
 plot(temp,type = "l",xaxt = 'n',col = "grey",ylim = c(-15,30)
@@ -78,7 +81,7 @@ mtext("Precipitation/",
 mtext("Snow water equivalent (cm)",
       side = 4,line = 5.5, cex = 2)
 legend(5,3500,
-       c("solar irradiation","solar irradiation revised model",
+       c("cumulative solar irradiation","cumulative solar irradiation (revised model)",
          "precipitation","snow water equivalent"),
        col = c("blue","red","black","red"),
        lty = c(2,2,1,1),lwd = 2,bty = "n",
@@ -105,5 +108,16 @@ mtext("Date",line = 1 , cex = 2.5,side = 1,
 mtext("Depth (cm)",side = 2,cex = 2,line = 5)
 abline(h = 0.5*Htank*100)
 abline(v = c(49,144,235,326))
+}
+
+
+
+png(file = paste(result,"Fittja/figures/png/",Location,"_",test,".png",sep = "")
+    ,width = 1200, height = 1800)
+plotoutput()
 dev.off()
 
+emf(file = paste(result,"Fittja/figures/",Location,"_",test,".emf",sep = "")
+    ,width = 12, height = 18,emfPlus = FALSE, family = "Calibri")
+plotoutput()
+dev.off()

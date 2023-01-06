@@ -181,13 +181,12 @@ Output.tank[18,2] <- max(Output$Depth.cm)       #Maximum Manure Depth
 
 #write the results out
 library(xlsx)
-manure.pic <- paste(result,"Fittja/figures/",Location,"_",test,".png",sep = "")
+manure.pic <- paste(result,"Fittja/figures/png/",Location,"_",test,".png",sep = "")
 wb <- createWorkbook()
 sheet <- createSheet(wb, "pic")
-addPicture(manure.pic, sheet)
+addPicture(manure.pic, sheet, startRow = 1, startColumn = 1)
 saveWorkbook(wb, file = paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/stat/OR_",
 test,".xlsx",sep = ""), password = NULL)
-
 
 write.xlsx(stat.avg,
            file = paste("C:/Users/hungc/OneDrive - AGR-AGR/AAFC/Project 3_Sweden/3. Results/Fittja/stat/OR_",

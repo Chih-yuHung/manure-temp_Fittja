@@ -21,7 +21,7 @@ if (submodels == 1) {
   if (snow > 0) {
     if (i %% mixing.day == 0) {
       #incoming Manure from the sump pit  
-      depthchange.d <- M.daily[i]*mixing.day + precip.d - Evap.depth.d
+      depthchange.d <- sum(M.daily[(i - 4):i]) + precip.d - Evap.depth.d
       if (M.depth <= 1.5) {
         M.Temp[21:30,288] <- mean(M.Temp[21:30,288])
       } else {
@@ -42,7 +42,7 @@ if (submodels == 1) {
   } else { 
    if (i %% mixing.day == 0) {
   #incoming Manure from the sump pit  
-  depthchange.d <- M.daily[i]*mixing.day + precip.d - Evap.depth.d
+  depthchange.d <- sum(M.daily[(i - 4):i]) + precip.d - Evap.depth.d
   if (M.depth <= 1.5) {
   M.Temp[21:30,288] <- mean(M.Temp[21:30,288])
   } else {
